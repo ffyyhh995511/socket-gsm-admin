@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="socket.gsm.admin.dao.OtaStatusMapper">
+  <resultMap id="BaseResultMap" type="socket.gsm.admin.bean.OtaStatus">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="mac_address" jdbcType="VARCHAR" property="macAddress" />
+    <result column="new_hardware_ver" jdbcType="INTEGER" property="newHardwareVer" />
+    <result column="new_software_ver" jdbcType="INTEGER" property="newSoftwareVer" />
+    <result column="old_hardware_ver" jdbcType="INTEGER" property="oldHardwareVer" />
+    <result column="old_software_ver" jdbcType="INTEGER" property="oldSoftwareVer" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, mac_address, new_hardware_ver, new_software_ver, old_hardware_ver, old_software_ver, 
+    status, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ota_status
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ota_status
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="socket.gsm.admin.bean.OtaStatus">
+    insert into ota_status (id, mac_address, new_hardware_ver, 
+      new_software_ver, old_hardware_ver, old_software_ver, 
+      status, create_time)
+    values (#{id,jdbcType=INTEGER}, #{macAddress,jdbcType=VARCHAR}, #{newHardwareVer,jdbcType=INTEGER}, 
+      #{newSoftwareVer,jdbcType=INTEGER}, #{oldHardwareVer,jdbcType=INTEGER}, #{oldSoftwareVer,jdbcType=INTEGER}, 
+      #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="socket.gsm.admin.bean.OtaStatus">
+    insert into ota_status
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="macAddress != null">
+        mac_address,
+      </if>
+      <if test="newHardwareVer != null">
+        new_hardware_ver,
+      </if>
+      <if test="newSoftwareVer != null">
+        new_software_ver,
+      </if>
+      <if test="oldHardwareVer != null">
+        old_hardware_ver,
+      </if>
+      <if test="oldSoftwareVer != null">
+        old_software_ver,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="macAddress != null">
+        #{macAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="newHardwareVer != null">
+        #{newHardwareVer,jdbcType=INTEGER},
+      </if>
+      <if test="newSoftwareVer != null">
+        #{newSoftwareVer,jdbcType=INTEGER},
+      </if>
+      <if test="oldHardwareVer != null">
+        #{oldHardwareVer,jdbcType=INTEGER},
+      </if>
+      <if test="oldSoftwareVer != null">
+        #{oldSoftwareVer,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="socket.gsm.admin.bean.OtaStatus">
+    update ota_status
+    <set>
+      <if test="macAddress != null">
+        mac_address = #{macAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="newHardwareVer != null">
+        new_hardware_ver = #{newHardwareVer,jdbcType=INTEGER},
+      </if>
+      <if test="newSoftwareVer != null">
+        new_software_ver = #{newSoftwareVer,jdbcType=INTEGER},
+      </if>
+      <if test="oldHardwareVer != null">
+        old_hardware_ver = #{oldHardwareVer,jdbcType=INTEGER},
+      </if>
+      <if test="oldSoftwareVer != null">
+        old_software_ver = #{oldSoftwareVer,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="socket.gsm.admin.bean.OtaStatus">
+    update ota_status
+    set mac_address = #{macAddress,jdbcType=VARCHAR},
+      new_hardware_ver = #{newHardwareVer,jdbcType=INTEGER},
+      new_software_ver = #{newSoftwareVer,jdbcType=INTEGER},
+      old_hardware_ver = #{oldHardwareVer,jdbcType=INTEGER},
+      old_software_ver = #{oldSoftwareVer,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- costom -->
+  <select id="queryAll" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from ota_status
+  </select>
+  
+</mapper>
