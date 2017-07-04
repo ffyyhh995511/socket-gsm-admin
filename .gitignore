@@ -2,6 +2,7 @@
 /target/
 /src/test/
 /weblog/
+/src/main/webapp/static/
 # built application files  
 *.apk
 *.ap_
