@@ -35,6 +35,11 @@ public class BinFileService {
 	@Resource
 	BinFileMapper binFileMapper;
 	
+	
+	public int delete(Integer id){
+		return binFileMapper.deleteByPrimaryKey(id);
+	}
+	
 	/**
 	 * 固件录入
 	 * @param binFile

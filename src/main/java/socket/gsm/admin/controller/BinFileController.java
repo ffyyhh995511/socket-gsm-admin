@@ -81,4 +81,21 @@ public class BinFileController extends BaseController{
 		}
     }
 	
+	@ResponseBody
+	@RequestMapping(value="/delete",method=RequestMethod.GET)
+    public Object delete(Integer id){
+		if(id == null){
+			return responseParamFail("参数不合法");
+		}
+        try {
+        	int res = binFileService.delete(id);
+        	if(res > 0){
+        		return responseSuccess("删除成功",null);
+        	}
+        } catch (Exception e) {
+			logger.error("删除失败",e);
+		}
+        return responseFail("删除失败");
+    }
+	
 }

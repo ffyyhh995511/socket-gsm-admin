@@ -131,7 +131,7 @@
   <select id="queryAll" resultMap="BaseResultMap">
   	select 
     <include refid="Base_Column_List" />
-    from ota_status
+    from ota_status order by id desc
   </select>
   
 </mapper>

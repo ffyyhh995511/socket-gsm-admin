@@ -225,7 +225,7 @@
   <select id="queryAll" resultMap="BaseResultMap">
   	select 
     <include refid="Base_Column_List" />
-    from bin_file
+    from bin_file order by id desc
   </select>
   
 </mapper>
