@@ -1,5 +1,7 @@
 package socket.gsm.admin.controller;
 
+import javax.servlet.http.Cookie;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +25,9 @@ public class UserController extends BaseController{
 				return responseSuccess("已登录",null); 
 			}
 			getSession().setAttribute("user", username+"_"+password);
+			Cookie cookie = new Cookie("username", username);
+			cookie.setDomain("OTA");
+			getResponse().addCookie(cookie);
 			return responseSuccess("登录成功",username); 
 		}else{
 			return responseFail("登陆失败");
