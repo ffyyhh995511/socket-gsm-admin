@@ -48,14 +48,13 @@ public class BinFileController extends BaseController{
         	if(rs > 0){
         		return responseSuccess("固件信息录入成功", null);
         	}else{
-        		return responseSuccess("固件信息部分录入成功", null);
+        		return responseSuccess("固件信息录入失败", null);
         	}
         	
 		} catch (Exception e) {
 			logger.error("固件上传失败",e);
-			responseFail("固件上传失败");
 		}
-        return responseSuccess();
+        return responseFail("固件上传失败");
     }  
 	
 	

@@ -85,8 +85,13 @@ public class BinFileService {
                         //重命名上传后的文件名  
                         String fileName = file.getOriginalFilename();  
                         //定义上传路径  
-                        String path = request.getSession().getServletContext().getRealPath("upload") + File.separator + fileName;  
-                        File localFile = new File(path);  
+                        String dir = request.getSession().getServletContext().getRealPath("upload");
+                        File dirFile = new File(dir);
+                        if(!dirFile.exists()){
+                        	dirFile.mkdirs();
+                        }
+                        String path = dir + File.separator + fileName;  
+                        File localFile = new File(path);
                         file.transferTo(localFile);
                         list.add(path);
                     }  

@@ -28,6 +28,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter{
 		}else{
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("status", false);
+			map.put("code", "001");
 			map.put("msg", "用户没有登录");
 			//将实体对象转换为JSON Object转换  
 		    JSONObject responseJSONObject = (JSONObject) JSONObject.toJSON(map);
