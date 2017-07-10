@@ -45,8 +45,9 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
         <!-- 关闭abanded连接时输出错误日志 -->
         <property name="logAbandoned" value="true" />
         <!-- 监控数据库 -->
-        <!-- <property name="filters" value="stat" /> -->
+        <!-- <property name="filters" value="stat,wall" /> -->
         <property name="filters" value="mergeStat" />
+        <property name="connectionProperties" value="druid.stat.slowSqlMillis=2000;config.decrypt=false" /><!-- 慢SQL标准 -->
     </bean>
     
     <!-- ========================================分隔线========================================= -->
