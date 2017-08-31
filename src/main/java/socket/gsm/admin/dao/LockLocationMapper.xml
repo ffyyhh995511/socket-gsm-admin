@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="socket.gsm.admin.dao.LockLocationMapper">
+  <resultMap id="BaseResultMap" type="socket.gsm.admin.bean.LockLocation">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="mac_address" jdbcType="VARCHAR" property="macAddress" />
+    <result column="location" jdbcType="VARCHAR" property="location" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="metadata" jdbcType="VARCHAR" property="metadata" />
+    <result column="lbs" jdbcType="VARCHAR" property="lbs" />
+    <result column="lbs_location" jdbcType="VARCHAR" property="lbsLocation" />
+    <result column="gps_time" jdbcType="INTEGER" property="gpsTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, mac_address, location, create_date, metadata, lbs, lbs_location, gps_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from lock_location
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from lock_location
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="socket.gsm.admin.bean.LockLocation">
+    insert into lock_location (id, mac_address, location, 
+      create_date, metadata, lbs, 
+      lbs_location, gps_time)
+    values (#{id,jdbcType=VARCHAR}, #{macAddress,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{metadata,jdbcType=VARCHAR}, #{lbs,jdbcType=VARCHAR}, 
+      #{lbsLocation,jdbcType=VARCHAR}, #{gpsTime,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="socket.gsm.admin.bean.LockLocation">
+    insert into lock_location
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="macAddress != null">
+        mac_address,
+      </if>
+      <if test="location != null">
+        location,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="metadata != null">
+        metadata,
+      </if>
+      <if test="lbs != null">
+        lbs,
+      </if>
+      <if test="lbsLocation != null">
+        lbs_location,
+      </if>
+      <if test="gpsTime != null">
+        gps_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="macAddress != null">
+        #{macAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null">
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="metadata != null">
+        #{metadata,jdbcType=VARCHAR},
+      </if>
+      <if test="lbs != null">
+        #{lbs,jdbcType=VARCHAR},
+      </if>
+      <if test="lbsLocation != null">
+        #{lbsLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="gpsTime != null">
+        #{gpsTime,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="socket.gsm.admin.bean.LockLocation">
+    update lock_location
+    <set>
+      <if test="macAddress != null">
+        mac_address = #{macAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null">
+        location = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="metadata != null">
+        metadata = #{metadata,jdbcType=VARCHAR},
+      </if>
+      <if test="lbs != null">
+        lbs = #{lbs,jdbcType=VARCHAR},
+      </if>
+      <if test="lbsLocation != null">
+        lbs_location = #{lbsLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="gpsTime != null">
+        gps_time = #{gpsTime,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="socket.gsm.admin.bean.LockLocation">
+    update lock_location
+    set mac_address = #{macAddress,jdbcType=VARCHAR},
+      location = #{location,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      metadata = #{metadata,jdbcType=VARCHAR},
+      lbs = #{lbs,jdbcType=VARCHAR},
+      lbs_location = #{lbsLocation,jdbcType=VARCHAR},
+      gps_time = #{gpsTime,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- custom -->
+  	
+  <select id="queryInMacWithDate" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from lock_location
+    where 1 = 1
+    <if test="macs != null">
+    	and mac_address in
+	    <foreach item="item" index="index" collection="macs" open="("
+				separator="," close=")">
+				#{item}
+		</foreach>
+    </if>
+    
+    <if test="start != null">
+		<![CDATA[   and DATE_FORMAT(create_date, '%Y-%m-%d') >=  DATE_FORMAT(#{start}, '%Y-%m-%d')   ]]>
+    </if>
+    
+    <if test="end != null">
+		<![CDATA[   and DATE_FORMAT(create_date, '%Y-%m-%d') <=  DATE_FORMAT(#{end}, '%Y-%m-%d')   ]]>
+    </if>
+    
+	order by create_date desc
+	
+  </select>
+  
+</mapper>

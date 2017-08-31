@@ -1,4 +1,4 @@
-package socket.gsm.admin.Interceptor;
+package socket.gsm.admin.interceptor;
 
 import java.io.IOException;
 import java.io.PrintWriter;
