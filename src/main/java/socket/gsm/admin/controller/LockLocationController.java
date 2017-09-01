@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import socket.gsm.admin.bean.LockLocation;
 import socket.gsm.admin.service.LockLocationService;
+import socket.gsm.admin.vo.LocationSummarizeVo;
 /***
  * 定位相关
  * @author fangyunhe
@@ -27,7 +28,7 @@ public class LockLocationController extends BaseController{
 	LockLocationService LockLocationService;
 	
 	/**
-	 * GPS定位明细
+	 * GPS定位情况明细
 	 * @param otaStatus
 	 * @param pageNum
 	 * @param pageSize
@@ -51,12 +52,44 @@ public class LockLocationController extends BaseController{
 			}
 			
 			List<LockLocation> queryInMacWithDate = LockLocationService.queryInMacWithDate(start, end, macArray);
-        	return responseSuccess("成功", queryInMacWithDate);
+        	return responseSuccess("GPS定位情况明细成功", queryInMacWithDate);
         } catch (Exception e) {
-			logger.error("查询失败",e);
-			return responseFail("查询失败");
+			logger.error("GPS定位情况明细失败",e);
+			return responseFail("GPS定位情况明细失败");
 		}
     }
+	
+	/**
+	 * GPS定位情况汇总
+	 * @param startDate
+	 * @param endStart
+	 * @param macs
+	 * @return
+	 */
+	@RequestMapping(value="/LockLocationSummarize",method=RequestMethod.GET)
+	public Object LockLocationSummarize(String startDate,String endStart,String macs){
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		Date start = null;
+		Date end = null;
+		String[] macArray = null;
+		try {
+			if(StringUtils.isNoneBlank(startDate)){
+				start = sdf.parse(startDate);
+			}
+			if(StringUtils.isNoneBlank(endStart)){
+				end = sdf.parse(endStart);
+			}
+			if(StringUtils.isNoneBlank(macs)){
+				macArray = macs.split(",");
+			}
+			List<LocationSummarizeVo> lockLocationSummarize = LockLocationService.LockLocationSummarize(start, end, macArray);
+			return responseSuccess("GPS定位情况汇总成功", lockLocationSummarize);
+		} catch (Exception e) {
+			logger.error("GPS定位情况汇总失败",e);
+			return responseFail("GPS定位情况汇总失败");
+		}
+	}
+	
 	
 	
 }

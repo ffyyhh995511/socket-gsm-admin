@@ -47,7 +47,7 @@
             <div class="row-fluid">
                 <div class="span3" id="sidebar">
                     <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
-                        <li>
+                        <li class="active">
                             <a href="lockLocationSummarize.html"><i class="icon-chevron-right"></i> GPS定位情况汇总</a>
                         </li>
                         <li>
@@ -59,8 +59,8 @@
                         <li>
                             <a href="form.html"><i class="icon-chevron-right"></i> 定位情况对比</a>
                         </li>
-                        <li class="active">
-                            <a href="lockLocationSummarize.html"><i class="icon-chevron-right"></i> GPS定位情况明细</a>
+                        <li>
+                            <a href="lockLocationDetail.html"><i class="icon-chevron-right"></i> GPS定位情况明细</a>
                         </li>
                         
                     </ul>
@@ -73,7 +73,7 @@
                         <!-- block -->
                         <div class="block">
                             <div class="navbar navbar-inner block-header">
-                                <div class="muted pull-left">GPS定位情况明细</div>
+                                <div class="muted pull-left"> GPS定位情况汇总</div>
                             </div>
                             <div class="block-content collapse in">
                                 <div class="span12">
@@ -139,11 +139,10 @@
 						                <tr>
 						                  	<th>序号</th>
 											<th>MAC地址</th>
-											<th>GPS定位</th>
-											<th>GPS坐标</th>
-											<th>基站定位</th>
-											<th>基站坐标</th>
-											<th>时间</th>
+											<th>定位次数</th>
+											<th>成功次数</th>
+											<th>失败次数</th>
+											<th>成功率</th>
 						                </tr>
 						              </thead>
 						              <tbody>
@@ -231,7 +230,7 @@
         	debugger;
         	$.ajax({
         		   type: "GET",
-        		   url: "../../location/queryLockLocationDetail",
+        		   url: "../../location/LockLocationSummarize",
         		   data: "startDate="+start+"&endStart="+end+"&macs="+macArray,
         		   success: function(msg){
         			   $(' .mytable > tbody > tr').remove();
@@ -239,19 +238,10 @@
     					   var tr ="<tr>";
     					   tr +="<td>"+(i+1)+"</td>";
     					   tr +="<td>"+v.macAddress+"</td>";
-    					   if(v.location){
-	    					   tr +="<td>"+v.location.replace(new RegExp("#","gm"),"<br>")+"</td>";
-    					   }else{
-    						   tr +="<td>"+v.location+"</td>";
-    					   }
-    					   if(v.metadata){
-	    					   tr +="<td>"+v.metadata.replace(new RegExp("#","gm"),"<br>")+"</td>";
-    					   }else{
-    						   tr +="<td>"+v.metadata+"</td>";
-    					   }
-    					   tr +="<td>"+v.lbs+"</td>";
-    					   tr +="<td>"+v.lbsLocation+"</td>";
-    					   tr +="<td>"+getLocalTime(v.createDate)+"</td>";
+    					   tr +="<td>"+v.macLocationTime+"</td>";
+    					   tr +="<td>"+v.macLocationSucc+"</td>";
+    					   tr +="<td>"+v.macLocationFail+"</td>";
+    					   tr +="<td>"+v.macLocationSuccRadio+"</td>";
     					   tr += "</tr>"
     					   $(' .mytable > tbody').append(tr);
     				   });
