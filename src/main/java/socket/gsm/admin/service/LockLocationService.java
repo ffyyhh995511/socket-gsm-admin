@@ -12,6 +12,7 @@ import java.util.Set;
 import javax.annotation.Resource;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import socket.gsm.admin.bean.LockLocation;
@@ -44,6 +45,7 @@ public class LockLocationService {
 	
 	/**
 	 * GPS定位情况汇总
+	 * LBS定位情况汇总
 	 * @param start
 	 * @param end
 	 * @param macs
@@ -54,7 +56,7 @@ public class LockLocationService {
 		if(CollectionUtils.isNotEmpty(queryInMacWithDate)){
 			macGroup(queryInMacWithDate, map);
 		}
-		List<LocationSummarizeVo> listmacSummarize = listmacSummarize(map);
+		List<LocationSummarizeVo> listmacSummarize = listMacSummarize(map);
 		return listmacSummarize;
 	}
 	
@@ -78,28 +80,81 @@ public class LockLocationService {
 	}
 	
 	/**
-	 * 分组统计
+	 * GPS分组统计
 	 * @param map
 	 * @param list
 	 */
-	public List<LocationSummarizeVo> listmacSummarize(Map<String,List<LockLocation>> map){
+	public List<LocationSummarizeVo> listMacSummarize(Map<String,List<LockLocation>> map){
 		List<LocationSummarizeVo> list = new ArrayList<LocationSummarizeVo>();
 		for(Map.Entry<String, List<LockLocation>> item: map.entrySet()){
 			LocationSummarizeVo vo = new LocationSummarizeVo();
 			vo.setMacAddress(item.getKey());
 			vo.setMacLocationTime((double) item.getValue().size());
+			vo.setLbsLocationTime((double) item.getValue().size());
 			List<LockLocation> value = item.getValue();
-			int succTime = 0;
+			//gps定位次数
+			int macSuccTime = 0;
+			//lbs定位次数
+			int lbsSuccTime = 0;
 			for (LockLocation lockLocation : value) {
 				if(!lockLocation.getLocation().equals("定位失败")){
-					succTime++;
+					macSuccTime++;
+				}
+				if(StringUtils.isNoneBlank(lockLocation.getLbsLocation())){
+					lbsSuccTime++;
 				}
 			}
-			vo.setMacLocationSucc((double) succTime);
-			vo.setMacLocationFail((double) (item.getValue().size()-succTime));
+			//gps 相关操作
+			vo.setMacLocationSucc((double) macSuccTime);
+			vo.setMacLocationFail((double) (item.getValue().size()-macSuccTime));
 			vo.setMacLocationSuccRadio((double) (vo.getMacLocationSucc()/vo.getMacLocationTime()));
+			//lbs 相关操作
+			vo.setLbsLocationSucc((double) lbsSuccTime);
+			vo.setLbsLocationFail((double)(item.getValue().size()-lbsSuccTime));
+			vo.setLbsLocationSuccRadio((double)(vo.getLbsLocationSucc()/vo.getLbsLocationTime()));
 			list.add(vo);
 		}
 		return list;
 	}
+	
+	/**
+	 * 所有定位汇总
+	 * @param start
+	 * @param end
+	 * @param macArray
+	 * @return
+	 */
+	public List<LocationSummarizeVo> allkLocationSummarize(Date start, Date end, String[] macArray) {
+		List<LocationSummarizeVo> list = new ArrayList<LocationSummarizeVo>();
+		List<LockLocation> queryInMacWithDate = locationMapper.queryInMacWithDate(start, end, macArray);
+		LocationSummarizeVo gpsVo = new LocationSummarizeVo();
+		gpsVo.setLocationType("GPS");
+		gpsVo.setLocationTotal((double) queryInMacWithDate.size());
+		
+		LocationSummarizeVo lbsVo = new LocationSummarizeVo();
+		lbsVo.setLocationType("LBS");
+		lbsVo.setLocationTotal((double) queryInMacWithDate.size());
+		double gpsSucc = 0;
+		double lbsSucc = 0;
+		for (LockLocation lockLocation : queryInMacWithDate) {
+			if(!lockLocation.getLocation().equals("定位失败")){
+				gpsSucc++;
+			}
+			if(StringUtils.isNoneBlank(lockLocation.getLbsLocation())){
+				lbsSucc++;
+			}
+		}
+		gpsVo.setLocationSucc(gpsSucc);
+		gpsVo.setLocationFail(queryInMacWithDate.size() - gpsSucc);
+		gpsVo.setLocationRadio(gpsVo.getLocationSucc()/gpsVo.getLocationTotal());
+		
+		lbsVo.setLocationSucc(lbsSucc);
+		lbsVo.setLocationFail(queryInMacWithDate.size() - lbsSucc);
+		lbsVo.setLocationRadio(lbsVo.getLocationSucc() / lbsVo.getLocationTotal());
+		
+		list.add(gpsVo);
+		list.add(lbsVo);
+		return list;
+	}
+	
 }

@@ -90,6 +90,68 @@ public class LockLocationController extends BaseController{
 		}
 	}
 	
+	/**
+	 * 基站定位情况汇总
+	 * @param startDate
+	 * @param endStart
+	 * @param macs
+	 * @return
+	 */
+	@RequestMapping(value="/lbsLocationSummarize",method=RequestMethod.GET)
+	public Object lbsLocationSummarize(String startDate,String endStart,String macs){
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		Date start = null;
+		Date end = null;
+		String[] macArray = null;
+		try {
+			if(StringUtils.isNoneBlank(startDate)){
+				start = sdf.parse(startDate);
+			}
+			if(StringUtils.isNoneBlank(endStart)){
+				end = sdf.parse(endStart);
+			}
+			if(StringUtils.isNoneBlank(macs)){
+				macArray = macs.split(",");
+			}
+			List<LocationSummarizeVo> lockLocationSummarize = LockLocationService.LockLocationSummarize(start, end, macArray);
+			return responseSuccess("GPS定位情况汇总成功", lockLocationSummarize);
+		} catch (Exception e) {
+			logger.error("GPS定位情况汇总失败",e);
+			return responseFail("GPS定位情况汇总失败");
+		}
+	}
+	
+	/**
+	 * 所有定位情况汇总
+	 * @param startDate
+	 * @param endStart
+	 * @param macs
+	 * @return
+	 */
+	@RequestMapping(value="/allLocationSummarize",method=RequestMethod.GET)
+	public Object allLocationSummarize(String startDate,String endStart,String macs){
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		Date start = null;
+		Date end = null;
+		String[] macArray = null;
+		try {
+			if(StringUtils.isNoneBlank(startDate)){
+				start = sdf.parse(startDate);
+			}
+			if(StringUtils.isNoneBlank(endStart)){
+				end = sdf.parse(endStart);
+			}
+			if(StringUtils.isNoneBlank(macs)){
+				macArray = macs.split(",");
+			}
+			List<LocationSummarizeVo> lockLocationSummarize = LockLocationService.allkLocationSummarize(start, end, macArray);
+			return responseSuccess("所有定位情况汇总成功", lockLocationSummarize);
+		} catch (Exception e) {
+			logger.error("所有定位情况汇总失败",e);
+			return responseFail("所有定位情况汇总失败");
+		}
+	}
+	
 	
 	
 }

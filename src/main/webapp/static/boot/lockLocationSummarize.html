@@ -51,13 +51,13 @@
                             <a href="lockLocationSummarize.html"><i class="icon-chevron-right"></i> GPS定位情况汇总</a>
                         </li>
                         <li>
-                            <a href="calendar.html"><i class="icon-chevron-right"></i> 基站定位情况汇总</a>
+                            <a href="lbsLocationSummarize.html"><i class="icon-chevron-right"></i> 基站定位情况汇总</a>
                         </li>
                         <li>
-                            <a href="stats.html"><i class="icon-chevron-right"></i> APP定位情况汇总</a>
+                            <a href="#"><i class="icon-chevron-right"></i> APP定位情况汇总</a>
                         </li>
                         <li>
-                            <a href="form.html"><i class="icon-chevron-right"></i> 定位情况对比</a>
+                            <a href="allLocationDetail.html"><i class="icon-chevron-right"></i> 定位情况对比</a>
                         </li>
                         <li>
                             <a href="lockLocationDetail.html"><i class="icon-chevron-right"></i> GPS定位情况明细</a>
@@ -227,12 +227,21 @@
         	if(macs){
         		macArray = macs.replace(new RegExp("\n","gm"),",");
         	}
-        	debugger;
         	$.ajax({
         		   type: "GET",
         		   url: "../../location/LockLocationSummarize",
         		   data: "startDate="+start+"&endStart="+end+"&macs="+macArray,
         		   success: function(msg){
+        			   
+        			   if('001' == msg.code){
+        				   window.location.href="../index.html";
+        			   }
+        			   
+        			   debugger;
+        			   if(msg.status == false){
+        				   alert(msg.msg);
+        			   }
+        			   
         			   $(' .mytable > tbody > tr').remove();
         			   $.each(msg.data, function(i, v){
     					   var tr ="<tr>";

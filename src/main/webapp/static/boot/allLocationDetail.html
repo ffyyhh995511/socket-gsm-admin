@@ -56,10 +56,10 @@
                         <li>
                             <a href="#"><i class="icon-chevron-right"></i> APP定位情况汇总</a>
                         </li>
-                        <li>
+                        <li class="active">
                             <a href="allLocationDetail.html"><i class="icon-chevron-right"></i> 定位情况对比</a>
                         </li>
-                        <li class="active">
+                        <li>
                             <a href="lockLocationSummarize.html"><i class="icon-chevron-right"></i> GPS定位情况明细</a>
                         </li>
                         
@@ -73,7 +73,7 @@
                         <!-- block -->
                         <div class="block">
                             <div class="navbar navbar-inner block-header">
-                                <div class="muted pull-left">GPS定位情况明细</div>
+                                <div class="muted pull-left">定位情况对比</div>
                             </div>
                             <div class="block-content collapse in">
                                 <div class="span12">
@@ -138,12 +138,11 @@
 						              <thead>
 						                <tr>
 						                  	<th>序号</th>
-											<th>MAC地址</th>
-											<th>GPS定位</th>
-											<th>GPS坐标</th>
-											<th>基站定位</th>
-											<th>基站坐标</th>
-											<th>时间</th>
+											<th>定位方式</th>
+											<th>总数</th>
+											<th>成功</th>
+											<th>失败</th>
+											<th>成功率</th>
 						                </tr>
 						              </thead>
 						              <tbody>
@@ -230,7 +229,7 @@
         	}
         	$.ajax({
         		   type: "GET",
-        		   url: "../../location/queryLockLocationDetail",
+        		   url: "../../location/allLocationSummarize",
         		   data: "startDate="+start+"&endStart="+end+"&macs="+macArray,
         		   success: function(msg){
         			   if('001' == msg.code){
@@ -245,20 +244,11 @@
         			   $.each(msg.data, function(i, v){
     					   var tr ="<tr>";
     					   tr +="<td>"+(i+1)+"</td>";
-    					   tr +="<td>"+v.macAddress+"</td>";
-    					   if(v.location){
-	    					   tr +="<td>"+v.location.replace(new RegExp("#","gm"),"<br>")+"</td>";
-    					   }else{
-    						   tr +="<td>"+v.location+"</td>";
-    					   }
-    					   if(v.metadata){
-	    					   tr +="<td>"+v.metadata.replace(new RegExp("#","gm"),"<br>")+"</td>";
-    					   }else{
-    						   tr +="<td>"+v.metadata+"</td>";
-    					   }
-    					   tr +="<td>"+v.lbs+"</td>";
-    					   tr +="<td>"+v.lbsLocation+"</td>";
-    					   tr +="<td>"+getLocalTime(v.createDate)+"</td>";
+    					   tr +="<td>"+v.locationType+"</td>";
+    					   tr +="<td>"+v.locationTotal+"</td>";
+    					   tr +="<td>"+v.locationSucc+"</td>";
+    					   tr +="<td>"+v.locationFail+"</td>";
+    					   tr +="<td>"+v.locationRadio+"</td>";
     					   tr += "</tr>"
     					   $(' .mytable > tbody').append(tr);
     				   });
@@ -266,11 +256,6 @@
         	});
         	
         });
-        
-        
-        function getLocalTime(nS) {
-    		return new Date(parseInt(nS)).toLocaleString().replace(/:\d{1,2}$/,' ');
-    	}
         
         </script>
     </body>
