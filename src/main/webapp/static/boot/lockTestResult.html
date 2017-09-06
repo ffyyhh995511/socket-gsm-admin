@@ -47,7 +47,7 @@
             <div class="row-fluid">
                 <div class="span3" id="sidebar">
                     <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
-                        <li class="active">
+                        <li>
                             <a href="lockLocationSummarize.html"><i class="icon-chevron-right"></i> GPS定位情况汇总</a>
                         </li>
                         <li>
@@ -60,9 +60,9 @@
                             <a href="allLocationDetail.html"><i class="icon-chevron-right"></i> 定位情况对比</a>
                         </li>
                         <li>
-                            <a href="lockLocationDetail.html"><i class="icon-chevron-right"></i> GPS定位情况明细</a>
+                            <a href="lockLocationSummarize.html"><i class="icon-chevron-right"></i> GPS定位情况明细</a>
                         </li>
-                        <li>
+                        <li class="active">
                             <a href="lockTestResult.html"><i class="icon-chevron-right"></i> 锁测结果</a>
                         </li>
                         
@@ -76,7 +76,7 @@
                         <!-- block -->
                         <div class="block">
                             <div class="navbar navbar-inner block-header">
-                                <div class="muted pull-left"> GPS定位情况汇总</div>
+                                <div class="muted pull-left">锁测结果</div>
                             </div>
                             <div class="block-content collapse in">
                                 <div class="span12">
@@ -141,11 +141,19 @@
 						              <thead>
 						                <tr>
 						                  	<th>序号</th>
-											<th>MAC地址</th>
-											<th>定位次数</th>
-											<th>成功次数</th>
-											<th>失败次数</th>
-											<th>成功率</th>
+						                  	<th>mac</th>
+											<th>扫描蓝牙</th>
+											<th>连接蓝牙</th>
+											<th>开锁</th>
+											<th>允许上锁</th>
+											<th>上锁</th>
+											<th>测试2g信号强度</th>
+											<th>测试GPS信号强度</th>
+											<th>拨号测试</th>
+											<th>锁版本号</th>
+											<th>锁电量</th>
+											<th>mcu+2g版本号</th>
+											<th>sim卡信息</th>
 						                </tr>
 						              </thead>
 						              <tbody>
@@ -221,6 +229,18 @@
             });
         });
         
+        function status(data){
+        	debugger;
+        	var text = '未定义';
+        	if(data == 1){
+        		text = '成功'
+        	}
+        	if(data == 0){
+        		text = '失败'
+        	}
+        	return text;
+        }
+        
         /* 自己业务 */
         $('.go-query').click(function(){
         	var start = $('#date01').val();
@@ -232,15 +252,13 @@
         	}
         	$.ajax({
         		   type: "GET",
-        		   url: "../../location/LockLocationSummarize",
+        		   url: "../../lockTestResult/queryDetail",
         		   data: "startDate="+start+"&endStart="+end+"&macs="+macArray,
         		   success: function(msg){
-        			   
         			   if('001' == msg.code){
         				   window.location.href="../index.html";
         			   }
         			   
-        			   debugger;
         			   if(msg.status == false){
         				   alert(msg.msg);
         			   }
@@ -250,10 +268,18 @@
     					   var tr ="<tr>";
     					   tr +="<td>"+(i+1)+"</td>";
     					   tr +="<td>"+v.macAddress+"</td>";
-    					   tr +="<td>"+v.macLocationTime+"</td>";
-    					   tr +="<td>"+v.macLocationSucc+"</td>";
-    					   tr +="<td>"+v.macLocationFail+"</td>";
-    					   tr +="<td>"+v.macLocationSuccRadio+"</td>";
+    					   tr +="<td>"+status(v.scanBluetooth)+"</td>";
+    					   tr +="<td>"+status(v.connectBluetooth)+"</td>";
+    					   tr +="<td>"+status(v.openLock)+"</td>";
+    					   tr +="<td>"+status(v.allowLock)+"</td>";
+    					   tr +="<td>"+status(v.closeLock)+"</td>";
+    					   tr +="<td>"+v.test2gRssi+"</td>";
+    					   tr +="<td>"+v.testGpsRssi+"</td>";
+    					   tr +="<td>"+status(v.testDialup)+"</td>";
+    					   tr +="<td>"+v.lockVersion+"</td>";
+    					   tr +="<td>"+v.lockPower+"</td>";
+    					   tr +="<td>"+v.mcuVersion+"</td>";
+    					   tr +="<td>"+v.simCardInfo+"</td>";
     					   tr += "</tr>"
     					   $(' .mytable > tbody').append(tr);
     				   });
@@ -261,11 +287,6 @@
         	});
         	
         });
-        
-        
-        function getLocalTime(nS) {
-    		return new Date(parseInt(nS)).toLocaleString().replace(/:\d{1,2}$/,' ');
-    	}
         
         </script>
     </body>
