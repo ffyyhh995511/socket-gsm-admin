@@ -59,13 +59,14 @@
                         <li>
                             <a href="allLocationDetail.html"><i class="icon-chevron-right"></i> 定位情况对比</a>
                         </li>
-                        <li class="active">
+                        <li>
                             <a href="lockLocationSummarize.html"><i class="icon-chevron-right"></i> GPS定位情况明细</a>
                         </li>
                         <li>
                             <a href="lockTestResult.html"><i class="icon-chevron-right"></i> 锁测结果</a>
                         </li>
-                        <li>
+                        
+                        <li class="active">
                             <a href="lockEndRide.html"><i class="icon-chevron-right"></i> 结束计费明细</a>
                         </li>
                         
@@ -79,7 +80,7 @@
                         <!-- block -->
                         <div class="block">
                             <div class="navbar navbar-inner block-header">
-                                <div class="muted pull-left">GPS定位情况明细</div>
+                                <div class="muted pull-left">结束计费明细</div>
                             </div>
                             <div class="block-content collapse in">
                                 <div class="span12">
@@ -144,12 +145,10 @@
 						              <thead>
 						                <tr>
 						                  	<th>序号</th>
-											<th>MAC地址</th>
-											<th>GPS定位</th>
-											<th>GPS坐标</th>
-											<th>基站定位</th>
-											<th>基站坐标</th>
-											<th>时间</th>
+						                  	<th>mac</th>
+											<th>锁上报时间</th>
+											<th>计费接口返回时间</th>
+											<th>计费接口返回信息</th>
 						                </tr>
 						              </thead>
 						              <tbody>
@@ -225,18 +224,38 @@
             });
         });
         
+        function mydate3(nS) {  
+        	 return new Date(parseInt(nS)).toLocaleString().replace(/:\d{1,2}$/,' ');  
+        }
+        
+        function mydate(ns){
+        	if(ns == null){
+        		return null;
+        	}
+        	var d = new Date(ns);  
+            var dformat = [ d.getFullYear(), d.getMonth() + 1, d.getDate() ].join('-')   
+                    + ' ' + [ d.getHours(), d.getMinutes(), d.getSeconds() ].join(':');  
+            return dformat;
+        }
+        
         /* 自己业务 */
         $('.go-query').click(function(){
         	var start = $('#date01').val();
         	var end = $('#date02').val();
         	var macs = $('.macs').val();
+        	
+        	if(macs == ""){
+        		alert("mac地址不能为空");
+        		return false;
+        	}
+        	
         	var macArray = "";
         	if(macs){
         		macArray = macs.replace(new RegExp("\n","gm"),",");
         	}
         	$.ajax({
         		   type: "GET",
-        		   url: "../../location/queryLockLocationDetail",
+        		   url: "../../end/queryDetail",
         		   data: "startDate="+start+"&endStart="+end+"&macs="+macArray,
         		   success: function(msg){
         			   if('001' == msg.code){
@@ -251,20 +270,10 @@
         			   $.each(msg.data, function(i, v){
     					   var tr ="<tr>";
     					   tr +="<td>"+(i+1)+"</td>";
-    					   tr +="<td>"+v.macAddress+"</td>";
-    					   if(v.location){
-	    					   tr +="<td>"+v.location.replace(new RegExp("#","gm"),"<br>")+"</td>";
-    					   }else{
-    						   tr +="<td>"+v.location+"</td>";
-    					   }
-    					   if(v.metadata){
-	    					   tr +="<td>"+v.metadata.replace(new RegExp("#","gm"),"<br>")+"</td>";
-    					   }else{
-    						   tr +="<td>"+v.metadata+"</td>";
-    					   }
-    					   tr +="<td>"+v.lbs+"</td>";
-    					   tr +="<td>"+v.lbsLocation+"</td>";
-    					   tr +="<td>"+getLocalTime(v.createDate)+"</td>";
+    					   tr +="<td>"+v.mac+"</td>";
+    					   tr +="<td>"+mydate(v.createDate)+"</td>";
+    					   tr +="<td>"+mydate(v.updateDate)+"</td>";
+    					   tr +="<td>"+v.result+"</td>";
     					   tr += "</tr>"
     					   $(' .mytable > tbody').append(tr);
     				   });
@@ -272,21 +281,6 @@
         	});
         	
         });
-        
-        
-        function getLocalTime(ns) {
-        	
-        	if(ns == null){
-        		return null;
-        	}
-        	var d = new Date(ns);  
-            var dformat = [ d.getFullYear(), d.getMonth() + 1, d.getDate() ].join('-')   
-                    + ' ' + [ d.getHours(), d.getMinutes(), d.getSeconds() ].join(':');  
-            return dformat;
-        	
-    	}
-        
-        
         
         </script>
     </body>

@@ -8,27 +8,29 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import socket.gsm.admin.bean.LockEndRide;
 import socket.gsm.admin.bean.LockLocation;
-import socket.gsm.admin.bean.LockTestResult;
-import socket.gsm.admin.service.LockTestResultService;
+import socket.gsm.admin.service.LockEndRideService;
 
 /**
  * @author fangyunhe
- * @date 2017年9月5日 下午5:06:36
+ * @date 2017年9月6日 下午5:55:01
  * 
  */
 @RestController
-@RequestMapping(value="/lockTestResult")
-public class LockTestResultController extends BaseController{
+@RequestMapping(value="/end")
+public class LockEndRideController extends BaseController{
+	
 	@Resource
-	LockTestResultService lockTestResultService;
+	LockEndRideService lockEndRideService; 
 	
 	/**
-	 * 锁测工具结果情况明细
+	 * 结束计费情况明细
 	 * @param otaStatus
 	 * @param pageNum
 	 * @param pageSize
@@ -50,13 +52,11 @@ public class LockTestResultController extends BaseController{
 			if(StringUtils.isNoneBlank(macs)){
 				macArray = macs.split(",");
 			}
-			
-			List<LockTestResult> queryInMacWithDate = lockTestResultService.queryInMacWithDate(start, end, macArray);
-        	return responseSuccess("锁测工具结果明细成功", queryInMacWithDate);
+			List<LockEndRide> queryInMacWithDate = lockEndRideService.queryInMacWithDate(start, end, macArray);
+        	return responseSuccess("结束计费情况明细成功", queryInMacWithDate);
         } catch (Exception e) {
-			logger.error("锁测工具结果明细失败",e);
-			logger.error("错误参数"+getParameterMap());
-			return responseFail("锁测工具结果明细失败");
+			logger.error("结束计费情况明细失败",e);
+			return responseFail("结束计费情况明细失败");
 		}
     }
 	
