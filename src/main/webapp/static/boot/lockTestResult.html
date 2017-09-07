@@ -45,7 +45,7 @@
         </div>
         <div class="container-fluid">
             <div class="row-fluid">
-                <div class="span3" id="sidebar">
+                <div class="span2" id="sidebar">
                     <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
                         <li>
                             <a href="lockLocationSummarize.html"><i class="icon-chevron-right"></i> GPS定位情况汇总</a>
@@ -60,7 +60,7 @@
                             <a href="allLocationDetail.html"><i class="icon-chevron-right"></i> 定位情况对比</a>
                         </li>
                         <li>
-                            <a href="lockLocationSummarize.html"><i class="icon-chevron-right"></i> GPS定位情况明细</a>
+                            <a href="lockLocationDetail.html"><i class="icon-chevron-right"></i> GPS定位情况明细</a>
                         </li>
                         <li class="active">
                             <a href="lockTestResult.html"><i class="icon-chevron-right"></i> 锁测结果</a>
@@ -72,7 +72,7 @@
                     </ul>
                 </div>
                 <!--/span-->
-                <div class="span9" id="content">
+                <div class="span10" id="content">
                       <!-- morris stacked chart -->
 
                      <div class="row-fluid">
@@ -157,6 +157,7 @@
 											<th>锁电量</th>
 											<th>mcu+2g版本号</th>
 											<th>sim卡信息</th>
+											<th>上报时间</th>
 						                </tr>
 						              </thead>
 						              <tbody>
@@ -232,6 +233,17 @@
             });
         });
         
+        
+        function mydate(ns){
+        	if(ns == null){
+        		return null;
+        	}
+        	var d = new Date(ns);  
+            var dformat = [ d.getFullYear(), d.getMonth() + 1, d.getDate() ].join('-')   
+                    + ' ' + [ d.getHours(), d.getMinutes(), d.getSeconds() ].join(':');  
+            return dformat;
+        }
+        
         function status(data){
         	debugger;
         	var text = '未定义';
@@ -283,6 +295,7 @@
     					   tr +="<td>"+v.lockPower+"</td>";
     					   tr +="<td>"+v.mcuVersion+"</td>";
     					   tr +="<td>"+v.simCardInfo+"</td>";
+    					   tr +="<td>"+mydate(v.createDate)+"</td>";
     					   tr += "</tr>"
     					   $(' .mytable > tbody').append(tr);
     				   });

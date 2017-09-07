@@ -45,7 +45,7 @@
         </div>
         <div class="container-fluid">
             <div class="row-fluid">
-                <div class="span3" id="sidebar">
+                <div class="span2" id="sidebar">
                     <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
                         <li>
                             <a href="lockLocationSummarize.html"><i class="icon-chevron-right"></i> GPS定位情况汇总</a>
@@ -60,7 +60,7 @@
                             <a href="allLocationDetail.html"><i class="icon-chevron-right"></i> 定位情况对比</a>
                         </li>
                         <li>
-                            <a href="lockLocationSummarize.html"><i class="icon-chevron-right"></i> GPS定位情况明细</a>
+                            <a href="lockLocationDetail.html"><i class="icon-chevron-right"></i> GPS定位情况明细</a>
                         </li>
                         <li>
                             <a href="lockTestResult.html"><i class="icon-chevron-right"></i> 锁测结果</a>
@@ -73,7 +73,7 @@
                     </ul>
                 </div>
                 <!--/span-->
-                <div class="span9" id="content">
+                <div class="span10" id="content">
                       <!-- morris stacked chart -->
 
                      <div class="row-fluid">
@@ -224,9 +224,6 @@
             });
         });
         
-        function mydate3(nS) {  
-        	 return new Date(parseInt(nS)).toLocaleString().replace(/:\d{1,2}$/,' ');  
-        }
         
         function mydate(ns){
         	if(ns == null){
