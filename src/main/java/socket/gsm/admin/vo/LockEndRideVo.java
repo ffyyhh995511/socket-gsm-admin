@@ -13,17 +13,17 @@ public class LockEndRideVo {
 	/**
 	 * 开锁成功次数
 	 */
-	private Integer openLockSuccTime;
+	private Double openLockSuccTime;
 	
 	/**
 	 * 开锁失败次数
 	 */
-	private Integer openLockFailTime;
+	private Double openLockFailTime;
 	
 	/**
 	 * 发送结束计费次数
 	 */
-	private Integer requestEndRideFeeTime;
+	private Double requestEndRideFeeTime;
 	
 	/**
 	 * 开锁成功率
@@ -39,28 +39,28 @@ public class LockEndRideVo {
 		this.mac = mac;
 	}
 
-	public Integer getOpenLockSuccTime() {
+	public Double getOpenLockSuccTime() {
 		return openLockSuccTime;
 	}
 
-	public void setOpenLockSuccTime(Integer openLockSuccTime) {
+	public void setOpenLockSuccTime(Double openLockSuccTime) {
 		this.openLockSuccTime = openLockSuccTime;
 	}
 
-	public Integer getRequestEndRideFeeTime() {
-		return requestEndRideFeeTime;
-	}
-
-	public void setRequestEndRideFeeTime(Integer requestEndRideFeeTime) {
-		this.requestEndRideFeeTime = requestEndRideFeeTime;
-	}
-
-	public Integer getOpenLockFailTime() {
+	public Double getOpenLockFailTime() {
 		return openLockFailTime;
 	}
 
-	public void setOpenLockFailTime(Integer openLockFailTime) {
+	public void setOpenLockFailTime(Double openLockFailTime) {
 		this.openLockFailTime = openLockFailTime;
+	}
+
+	public Double getRequestEndRideFeeTime() {
+		return requestEndRideFeeTime;
+	}
+
+	public void setRequestEndRideFeeTime(Double requestEndRideFeeTime) {
+		this.requestEndRideFeeTime = requestEndRideFeeTime;
 	}
 
 	public Double getRequestEndRideFeeRadio() {
@@ -70,7 +70,5 @@ public class LockEndRideVo {
 	public void setRequestEndRideFeeRadio(Double requestEndRideFeeRadio) {
 		this.requestEndRideFeeRadio = requestEndRideFeeRadio;
 	}
-	
-	
 	
 }

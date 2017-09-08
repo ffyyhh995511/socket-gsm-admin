@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
@@ -71,22 +72,24 @@ public class LockEndRideService {
 			LockEndRideVo vo = new LockEndRideVo();
 			vo.setMac(itemMap.getKey());
 			if(CollectionUtils.isNotEmpty(itemMap.getValue())){
-				vo.setRequestEndRideFeeTime(itemMap.getValue().size());
+				vo.setRequestEndRideFeeTime((double) itemMap.getValue().size());
 			}else{
-				vo.setRequestEndRideFeeTime(0);
+				vo.setRequestEndRideFeeTime((double) 0);
 			}
-			int openLockSuccTime = 0;
+			double openLockSuccTime = 0;
 			List<LockEndRide> value = itemMap.getValue();
 			if(CollectionUtils.isNotEmpty(value)){
 				for (LockEndRide lockEndRide : value) {
 					String payload = lockEndRide.getPayload();
 					Map<String,String> parseObject = JSON.parseObject(payload, Map.class);
-					String obt = parseObject.get("OBT");
-					String[] split = obt.split("#");
-					String openLockTime = split[0];
-					//锁梁打开时间小于50毫秒算成功
-					if(Integer.parseInt(openLockTime) <= 5){
-						openLockSuccTime++;
+					if(parseObject != null && StringUtils.isNoneBlank(parseObject.get("OBT"))){
+						String obt = parseObject.get("OBT");
+						String[] split = obt.split("#");
+						String openLockTime = split[0];
+						//锁梁打开时间小于50毫秒算成功
+						if(Integer.parseInt(openLockTime) <= 5){
+							openLockSuccTime++;
+						}
 					}
 				}
 			}
