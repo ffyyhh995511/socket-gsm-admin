@@ -12,6 +12,8 @@ public class LockEndRide {
     private Date updateDate;
 
     private String result;
+    
+    private String payload;
 
     public String getId() {
         return id;
@@ -52,4 +54,14 @@ public class LockEndRide {
     public void setResult(String result) {
         this.result = result == null ? null : result.trim();
     }
+
+	public String getPayload() {
+		return payload;
+	}
+
+	public void setPayload(String payload) {
+		this.payload = payload;
+	}
+    
+    
 }

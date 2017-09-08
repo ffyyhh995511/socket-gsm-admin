@@ -151,10 +151,10 @@
 						                <tr>
 						                  	<th>序号</th>
 											<th>MAC地址</th>
-											<th>定位次数</th>
-											<th>成功次数</th>
-											<th>失败次数</th>
-											<th>成功率</th>
+											<th>开锁成功次数</th>
+											<th>开锁失败次数</th>
+											<th>开锁请求次数</th>
+											<th>开锁成功率</th>
 						                </tr>
 						              </thead>
 						              <tbody>
@@ -241,7 +241,7 @@
         	}
         	$.ajax({
         		   type: "GET",
-        		   url: "../../location/LockLocationSummarize",
+        		   url: "../../end/lockEndRideReqSuccRadio",
         		   data: "startDate="+start+"&endStart="+end+"&macs="+macArray,
         		   success: function(msg){
         			   
@@ -257,11 +257,11 @@
         			   $.each(msg.data, function(i, v){
     					   var tr ="<tr>";
     					   tr +="<td>"+(i+1)+"</td>";
-    					   tr +="<td>"+v.macAddress+"</td>";
-    					   tr +="<td>"+v.macLocationTime+"</td>";
-    					   tr +="<td>"+v.macLocationSucc+"</td>";
-    					   tr +="<td>"+v.macLocationFail+"</td>";
-    					   tr +="<td>"+toPercent(v.macLocationSuccRadio)+"</td>";
+    					   tr +="<td>"+v.mac+"</td>";
+    					   tr +="<td>"+v.openLockSuccTime+"</td>";
+    					   tr +="<td>"+v.openLockFailTime+"</td>";
+    					   tr +="<td>"+v.requestEndRideFeeTime+"</td>";
+    					   tr +="<td>"+toPercent(v.requestEndRideFeeRadio)+"</td>";
     					   tr += "</tr>"
     					   $(' .mytable > tbody').append(tr);
     				   });

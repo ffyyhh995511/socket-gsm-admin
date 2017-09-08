@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import socket.gsm.admin.bean.LockEndRide;
 import socket.gsm.admin.bean.LockLocation;
 import socket.gsm.admin.service.LockEndRideService;
+import socket.gsm.admin.vo.LockEndRideVo;
 
 /**
  * @author fangyunhe
@@ -57,6 +58,37 @@ public class LockEndRideController extends BaseController{
         } catch (Exception e) {
 			logger.error("结束计费情况明细失败",e);
 			return responseFail("结束计费情况明细失败");
+		}
+    }
+	
+	/**
+	 * 结束计费发送请求成功率统计
+	 * @param startDate
+	 * @param endStart
+	 * @param macs
+	 * @return
+	 */
+	@RequestMapping(value="/lockEndRideReqSuccRadio",method=RequestMethod.GET)
+    public Object lockEndRideReqSuccRadio(String startDate,String endStart,String macs){  
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		Date start = null;
+		Date end = null;
+		String[] macArray = null;
+		try {
+			if(StringUtils.isNoneBlank(startDate)){
+				start = sdf.parse(startDate);
+			}
+			if(StringUtils.isNoneBlank(endStart)){
+				end = sdf.parse(endStart);
+			}
+			if(StringUtils.isNoneBlank(macs)){
+				macArray = macs.split(",");
+			}
+			List<LockEndRideVo> lockEndRideReqSuccRadio = lockEndRideService.lockEndRideReqSuccRadio(start, end, macArray);
+        	return responseSuccess("结束计费发送请求成功率统计成功", lockEndRideReqSuccRadio);
+        } catch (Exception e) {
+			logger.error("结束计费发送请求成功率统计失败",e);
+			return responseFail("结束计费发送请求成功率统计失败");
 		}
     }
 	
