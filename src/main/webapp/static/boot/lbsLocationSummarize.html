@@ -251,7 +251,7 @@
     					   tr +="<td>"+v.lbsLocationTime+"</td>";
     					   tr +="<td>"+v.lbsLocationSucc+"</td>";
     					   tr +="<td>"+v.lbsLocationFail+"</td>";
-    					   tr +="<td>"+v.lbsLocationSuccRadio+"</td>";
+    					   tr +="<td>"+toPercent(v.lbsLocationSuccRadio)+"</td>";
     					   tr += "</tr>"
     					   $(' .mytable > tbody').append(tr);
     				   });
@@ -264,6 +264,16 @@
         function getLocalTime(nS) {
     		return new Date(parseInt(nS)).toLocaleString().replace(/:\d{1,2}$/,' ');
     	}
+        
+        
+        /**
+        *这里需要先用Number进行数据类型转换，然后去指定截取转换后的小数点后几位(按照四舍五入)，这里是截取一位，0.1266转换后会变成12.7%
+        */
+        function toPercent(point){
+            var str=Number(point*100).toFixed(2);
+            str+="%";
+            return str;
+        }
         
         </script>
     </body>
