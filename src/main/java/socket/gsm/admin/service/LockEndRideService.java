@@ -68,6 +68,10 @@ public class LockEndRideService {
 	 */
 	public List<LockEndRideVo> calcEndRideFeeTime(Map<String,List<LockEndRide>> map){
 		List<LockEndRideVo> list = new ArrayList<LockEndRideVo>();
+		//开锁请求次数 总数
+		double requestEndRideFeeTimeTotal = 0;
+		//开锁成功次数 总数
+		double requestEndRideSuccTimeTotal = 0;
 		for(Map.Entry<String,List<LockEndRide>> itemMap : map.entrySet()){
 			LockEndRideVo vo = new LockEndRideVo();
 			vo.setMac(itemMap.getKey());
@@ -76,6 +80,7 @@ public class LockEndRideService {
 			}else{
 				vo.setRequestEndRideFeeTime((double) 0);
 			}
+			requestEndRideFeeTimeTotal += vo.getRequestEndRideFeeTime();
 			double openLockSuccTime = 0;
 			List<LockEndRide> value = itemMap.getValue();
 			if(CollectionUtils.isNotEmpty(value)){
@@ -96,8 +101,17 @@ public class LockEndRideService {
 			vo.setOpenLockSuccTime(openLockSuccTime);
 			vo.setOpenLockFailTime(vo.getRequestEndRideFeeTime()-vo.getOpenLockSuccTime());
 			vo.setRequestEndRideFeeRadio((double) (vo.getOpenLockSuccTime()/vo.getRequestEndRideFeeTime()));
+			requestEndRideSuccTimeTotal += vo.getOpenLockSuccTime();
 			list.add(vo);
 		}
+		//合并
+		LockEndRideVo total = new LockEndRideVo();
+		total.setMac("总数");
+		total.setRequestEndRideFeeTime(requestEndRideFeeTimeTotal);
+		total.setOpenLockSuccTime(requestEndRideSuccTimeTotal);
+		total.setOpenLockFailTime(requestEndRideFeeTimeTotal - requestEndRideSuccTimeTotal);
+		total.setRequestEndRideFeeRadio(requestEndRideSuccTimeTotal / requestEndRideFeeTimeTotal);
+		list.add(total);
 		return list;
 	}
 	

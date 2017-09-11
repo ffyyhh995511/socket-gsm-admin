@@ -36,16 +36,16 @@ public class LockTestResultController extends BaseController{
 	 */
 	@RequestMapping(value="/queryDetail",method=RequestMethod.GET)
     public Object queryDetail(String startDate,String endStart,String macs){  
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 		Date start = null;
 		Date end = null;
 		String[] macArray = null;
 		try {
 			if(StringUtils.isNoneBlank(startDate)){
-				start = sdf.parse(startDate);
+				start = sdf.parse(startDate +" 00:00:00");
 			}
 			if(StringUtils.isNoneBlank(endStart)){
-				end = sdf.parse(endStart);
+				end = sdf.parse(endStart + " 23:59:59");
 			}
 			if(StringUtils.isNoneBlank(macs)){
 				macArray = macs.split(",");
