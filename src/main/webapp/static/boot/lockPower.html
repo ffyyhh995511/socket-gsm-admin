@@ -47,7 +47,7 @@
             <div class="row-fluid">
                 <div class="span2" id="sidebar">
                     <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
-                        <li class="active">
+                        <li>
                             <a href="lockLocationSummarize.html"><i class="icon-chevron-right"></i> GPS定位情况汇总</a>
                         </li>
                         <li>
@@ -72,8 +72,8 @@
                             <a href="lockEndRideReqSuccRadio.html"><i class="icon-chevron-right"></i> 结束计费发送请求成功率统计</a>
                         </li>
                         
-                        <li>
-                            <a href="lockEndRideReqSuccRadio.html"><i class="icon-chevron-right"></i> 电量统计</a>
+                        <li class="active">
+                            <a href="lockPower.html"><i class="icon-chevron-right"></i> 电量统计</a>
                         </li>
                         
                     </ul>
@@ -86,7 +86,7 @@
                         <!-- block -->
                         <div class="block">
                             <div class="navbar navbar-inner block-header">
-                                <div class="muted pull-left"> GPS定位情况汇总</div>
+                                <div class="muted pull-left">电量统计</div>
                             </div>
                             <div class="block-content collapse in">
                                 <div class="span12">
@@ -150,12 +150,11 @@
   									<table class="mytable table table-hover">
 						              <thead>
 						                <tr>
-						                  	<th>序号</th>
-											<th>MAC地址</th>
-											<th>定位次数</th>
-											<th>成功次数</th>
-											<th>失败次数</th>
-											<th>成功率</th>
+											<th>总数</th>
+											<th>95%-100%</th>
+											<th>90%-95%</th>
+											<th>80%-90%</th>
+											<th>低于80%</th>
 						                </tr>
 						              </thead>
 						              <tbody>
@@ -242,10 +241,9 @@
         	}
         	$.ajax({
         		   type: "GET",
-        		   url: "../../location/LockLocationSummarize",
+        		   url: "../../end/lockPower",
         		   data: "startDate="+start+"&endStart="+end+"&macs="+macArray,
         		   success: function(msg){
-        			   
         			   if('001' == msg.code){
         				   window.location.href="../index.html";
         			   }
@@ -255,34 +253,34 @@
         			   }
         			   
         			   $(' .mytable > tbody > tr').remove();
-        			   $.each(msg.data, function(i, v){
-    					   var tr ="<tr>";
-    					   tr +="<td>"+(i+1)+"</td>";
-    					   tr +="<td>"+v.macAddress+"</td>";
-    					   tr +="<td>"+v.macLocationTime+"</td>";
-    					   tr +="<td>"+v.macLocationSucc+"</td>";
-    					   tr +="<td>"+v.macLocationFail+"</td>";
-    					   tr +="<td>"+toPercent(v.macLocationSuccRadio)+"</td>";
-    					   tr += "</tr>"
-    					   $(' .mytable > tbody').append(tr);
-    				   });
+        			   var tr ="<tr>";
+					   tr +="<td>"+msg.data.total+"</td>";
+					   tr +="<td>"+msg.data.power95+"</td>";
+					   tr +="<td>"+msg.data.power90+"</td>";
+					   tr +="<td>"+msg.data.power80+"</td>";
+					   tr +="<td>"+msg.data.powerOther+"</td>";
+					   tr += "</tr>"
+					   
+					   $(' .mytable > tbody').append(tr);
         		   }
         	});
         	
         });
         
-        /**
-         *这里需要先用Number进行数据类型转换，然后去指定截取转换后的小数点后几位(按照四舍五入)，这里是截取一位，0.1266转换后会变成12.7%
-         */
-         function toPercent(point){
-             var str=Number(point*100).toFixed(2);
-             str+="%";
-             return str;
-         }
         
-        function getLocalTime(nS) {
-    		return new Date(parseInt(nS)).toLocaleString().replace(/:\d{1,2}$/,' ');
+        function getLocalTime(ns) {
+        	
+        	if(ns == null){
+        		return null;
+        	}
+        	var d = new Date(ns);  
+            var dformat = [ d.getFullYear(), d.getMonth() + 1, d.getDate() ].join('-')   
+                    + ' ' + [ d.getHours(), d.getMinutes(), d.getSeconds() ].join(':');  
+            return dformat;
+        	
     	}
+        
+        
         
         </script>
     </body>

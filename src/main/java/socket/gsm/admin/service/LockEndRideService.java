@@ -1,6 +1,8 @@
 package socket.gsm.admin.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +19,7 @@ import com.alibaba.fastjson.JSON;
 import socket.gsm.admin.bean.LockEndRide;
 import socket.gsm.admin.dao.LockEndRideMapper;
 import socket.gsm.admin.vo.LockEndRideVo;
+import socket.gsm.admin.vo.PowerVo;
 
 /**
  * @author fangyunhe
@@ -39,6 +42,87 @@ public class LockEndRideService {
 		return calcEndRideFeeTime;
 	}
 	
+	/**
+	 * 各个区间电量统计
+	 * @param start
+	 * @param end
+	 * @param macArray
+	 * @return
+	 */
+	public PowerVo queryRangePower(Date start, Date end, String[] macArray) {
+		List<LockEndRide> queryInMacWithDateList = lockEndRideMapper.queryInMacWithDate(start,end,macArray);
+		Map<String, List<LockEndRide>> groupByMac = groupByMac(queryInMacWithDateList);
+		sortByCreateDate(groupByMac);
+		PowerVo analyzePower = analyzePower(groupByMac);
+		return analyzePower;
+	}
+	
+	/**
+	 * 
+	 * 根据mac，统计以下区间的电量情况：
+	 * 总数：100
+	 * 95%-100%：80
+	 * 90%-95%：10
+	 * 80%-90%：5
+	 * 低于80%：5
+	 * @param groupByMac
+	 */
+	private PowerVo analyzePower(Map<String, List<LockEndRide>> groupByMac) {
+		int power95 = 0;
+		int power90 = 0;
+		int power80 = 0;
+		int powerOther = 0;
+		int total = 0;
+		for(Map.Entry<String, List<LockEndRide>> map : groupByMac.entrySet()){
+			List<LockEndRide> value = map.getValue();
+			if(CollectionUtils.isNotEmpty(value)){
+				LockEndRide lockEndRide = value.get(0);
+				String payload = lockEndRide.getPayload();
+				Map<String,String> parseObject = JSON.parseObject(payload, Map.class);
+				String bat = parseObject.get("BAT");
+				int parseInt = Integer.parseInt(bat);
+				if(parseInt >= 95){
+					power95++;
+				}else if (95 > parseInt &&parseInt >= 90) {
+					
+				}else if (90 > parseInt &&parseInt >= 80) {
+					power80++;
+				}else{
+					powerOther++;
+				}
+			}
+		}
+		total = groupByMac.entrySet().size();
+		PowerVo powerVo = new PowerVo();
+		powerVo.setPower80(power80);
+		powerVo.setPower90(power90);
+		powerVo.setPower95(power95);
+		powerVo.setPowerOther(powerOther);
+		powerVo.setTotal(total);
+		return powerVo;
+	}
+
+	/**
+	 * 对集合进行时间排序
+	 * @param groupByMac
+	 */
+	private void sortByCreateDate(Map<String, List<LockEndRide>> groupByMac) {
+		for (Map.Entry<String, List<LockEndRide>> map : groupByMac.entrySet()) {
+			List<LockEndRide> list = map.getValue();
+			Collections.sort(list, new Comparator<LockEndRide>() {
+				public int compare(LockEndRide o1, LockEndRide o2) {
+					if (o1.getCreateDate().getTime() > o2.getCreateDate().getTime()) {
+						return 1;
+					} else if (o1.getCreateDate().getTime() < o2.getCreateDate().getTime()) {
+						return -1;
+					} else {
+						return 0;
+					}
+				}
+			});
+		}
+	}
+
 	/**
 	 * 安mac分组
 	 * @param queryInMacWithDateList

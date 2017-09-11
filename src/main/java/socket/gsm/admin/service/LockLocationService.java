@@ -100,7 +100,8 @@ public class LockLocationService {
 				if(!lockLocation.getLocation().equals("定位失败")){
 					macSuccTime++;
 				}
-				if(StringUtils.isNoneBlank(lockLocation.getLbsLocation())){
+				//获取到基站坐标认为是成功
+				if(StringUtils.isNoneBlank(lockLocation.getLbs())){
 					lbsSuccTime++;
 				}
 			}
