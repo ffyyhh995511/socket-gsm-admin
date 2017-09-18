@@ -283,10 +283,10 @@
         			   var tr ="<tr>";
 					   tr +="<td>"+msg.data.downloadFail+"</td>";
 					   tr +="<td>"+msg.data.downloadSucc+"</td>";
-					   tr +="<td>"+toPercent(msg.data.downloadFail/(msg.data.downloadSucc+msg.data.downloadFail))+"</td>";
+					   tr +="<td>"+toPercent(msg.data.downloadSucc/(msg.data.downloadSucc+msg.data.downloadFail))+"</td>";
 					   tr +="<td>"+msg.data.installFail+"</td>";
 					   tr +="<td>"+msg.data.installSucc+"</td>";
-					   tr +="<td>"+toPercent(msg.data.installFail/(msg.data.installFail+msg.data.installSucc))+"</td>";
+					   tr +="<td>"+toPercent(msg.data.installSucc/(msg.data.installFail+msg.data.installSucc))+"</td>";
 					   tr += "</tr>"
 					   $(' .mytable > tbody').append(tr);
         		   }
