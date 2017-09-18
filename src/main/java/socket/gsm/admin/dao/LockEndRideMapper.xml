@@ -6,13 +6,17 @@
     <result column="mac" jdbcType="VARCHAR" property="mac" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="open_lock_time" jdbcType="TIMESTAMP" property="openLockTime" />
+    <result column="close_lock_time" jdbcType="TIMESTAMP" property="closeLockTime" />
+    <result column="send_request_time" jdbcType="TIMESTAMP" property="sendRequestTime" />
+    <result column="open_period" jdbcType="INTEGER" property="openPeriod" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="socket.gsm.admin.bean.LockEndRide">
     <result column="result" jdbcType="LONGVARCHAR" property="result" />
     <result column="payload" jdbcType="LONGVARCHAR" property="payload" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, mac, create_date, update_date
+    id, mac, create_date, update_date,open_lock_time, close_lock_time, send_request_time, open_period
   </sql>
   <sql id="Blob_Column_List">
     result,payload

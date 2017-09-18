@@ -72,17 +72,18 @@
                             <a href="lockEndRideReqSuccRadio.html"><i class="icon-chevron-right"></i> 结束计费发送请求成功率统计</a>
                         </li>
                         
-                        <li class="active">
-                            <a href="lockPower.html"><i class="icon-chevron-right"></i> 电量统计</a>
+                        <li>
+                            <a href="lockEndRideReqSuccRadio.html"><i class="icon-chevron-right"></i> 电量统计</a>
                         </li>
                         
                         <li>
                             <a href="otaStatisDownloadAndInstall.html"><i class="icon-chevron-right"></i> OTA下载和安装统计</a>
                         </li>
                         
-                        <li>
+                        <li class="active">
                             <a href="endRidePayloadDetail.html"><i class="icon-chevron-right"></i> 结束计费payload明细</a>
                         </li>
+                         
                         
                     </ul>
                 </div>
@@ -94,7 +95,7 @@
                         <!-- block -->
                         <div class="block">
                             <div class="navbar navbar-inner block-header">
-                                <div class="muted pull-left">电量统计</div>
+                                <div class="muted pull-left">结束计费payload明细</div>
                             </div>
                             <div class="block-content collapse in">
                                 <div class="span12">
@@ -158,11 +159,12 @@
   									<table class="mytable table table-hover">
 						              <thead>
 						                <tr>
-											<th>总数</th>
-											<th>95%-100%</th>
-											<th>90%-95%</th>
-											<th>80%-90%</th>
-											<th>低于80%</th>
+						                  	<th>序号</th>
+											<th>MAC地址</th>
+											<th>开锁时间</th>
+											<th>关锁时间</th>
+											<th>发送结束计费时间</th>
+											<th>锁梁打开时长（单位毫秒）</th>
 						                </tr>
 						              </thead>
 						              <tbody>
@@ -249,7 +251,7 @@
         	}
         	$.ajax({
         		   type: "GET",
-        		   url: "../../end/lockPower",
+        		   url: "../../end/payloadDetails",
         		   data: "startDate="+start+"&endStart="+end+"&macs="+macArray,
         		   success: function(msg){
         			   if('001' == msg.code){
@@ -261,15 +263,17 @@
         			   }
         			   
         			   $(' .mytable > tbody > tr').remove();
-        			   var tr ="<tr>";
-					   tr +="<td>"+msg.data.total+"</td>";
-					   tr +="<td>"+msg.data.power95+"</td>";
-					   tr +="<td>"+msg.data.power90+"</td>";
-					   tr +="<td>"+msg.data.power80+"</td>";
-					   tr +="<td>"+msg.data.powerOther+"</td>";
-					   tr += "</tr>"
-					   
-					   $(' .mytable > tbody').append(tr);
+        			   $.each(msg.data, function(i, v){
+    					   var tr ="<tr>";
+    					   tr +="<td>"+(i+1)+"</td>";
+    					   tr +="<td>"+v.mac+"</td>";
+    					   tr +="<td>"+getLocalTime(v.openLockTime)+"</td>";
+    					   tr +="<td>"+getLocalTime(v.closeLockTime)+"</td>";
+    					   tr +="<td>"+getLocalTime(v.sendRequestTime)+"</td>";
+    					   tr +="<td>"+v.openPeriod+"</td>";
+    					   tr += "</tr>"
+    					   $(' .mytable > tbody').append(tr);
+    				   });
         		   }
         	});
         	

@@ -147,8 +147,8 @@ public class LockEndRideController extends BaseController{
 			if(StringUtils.isNoneBlank(macs)){
 				macArray = macs.split(",");
 			}
-			PowerVo queryRangePower = lockEndRideService.queryLoadPayLoad(start, end, macArray);
-        	return responseSuccess("结束计费payload details成功", queryRangePower);
+			List<LockEndRide> queryLoadPayLoad = lockEndRideService.queryLoadPayLoad(start, end, macArray);
+        	return responseSuccess("结束计费payload details成功", queryLoadPayLoad);
         } catch (Exception e) {
 			logger.error("结束计费payload details失败",e);
 			return responseFail("结束计费payload details失败");

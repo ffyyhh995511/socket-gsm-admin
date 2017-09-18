@@ -14,6 +14,26 @@ public class LockEndRide {
     private String result;
     
     private String payload;
+    
+    /**
+     * 开锁时间
+     */
+    private Date openLockTime;
+    
+    /**
+     * 关锁时间
+     */
+    private Date closeLockTime;
+    
+    /**
+     * 发送结束计费时间
+     */
+    private Date sendRequestTime;
+    
+    /**
+     * 锁梁打开时长（单位毫秒）
+     */
+    private Integer openPeriod;
 
     public String getId() {
         return id;
@@ -61,6 +81,38 @@ public class LockEndRide {
 
 	public void setPayload(String payload) {
 		this.payload = payload;
+	}
+
+	public Date getOpenLockTime() {
+		return openLockTime;
+	}
+
+	public void setOpenLockTime(Date openLockTime) {
+		this.openLockTime = openLockTime;
+	}
+
+	public Date getCloseLockTime() {
+		return closeLockTime;
+	}
+
+	public void setCloseLockTime(Date closeLockTime) {
+		this.closeLockTime = closeLockTime;
+	}
+
+	public Date getSendRequestTime() {
+		return sendRequestTime;
+	}
+
+	public void setSendRequestTime(Date sendRequestTime) {
+		this.sendRequestTime = sendRequestTime;
+	}
+
+	public Integer getOpenPeriod() {
+		return openPeriod;
+	}
+
+	public void setOpenPeriod(Integer openPeriod) {
+		this.openPeriod = openPeriod;
 	}
     
     
