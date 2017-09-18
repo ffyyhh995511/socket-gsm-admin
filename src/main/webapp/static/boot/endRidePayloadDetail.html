@@ -245,6 +245,11 @@
         	var start = $('#date01').val();
         	var end = $('#date02').val();
         	var macs = $('.macs').val();
+        	debugger;
+        	if(start == "" || end == ""){
+        		alert("时间不能为空");
+        		return false;
+        	}
         	var macArray = "";
         	if(macs){
         		macArray = macs.replace(new RegExp("\n","gm"),",");
