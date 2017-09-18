@@ -198,6 +198,12 @@ public class LockEndRideService {
 		list.add(total);
 		return list;
 	}
+
+	public PowerVo queryLoadPayLoad(Date start, Date end, String[] macArray) {
+		List<LockEndRide> queryInMacWithDateList = lockEndRideMapper.queryInMacWithDate(start,end,macArray);
+		
+		return null;
+	}
 	
 	
 }

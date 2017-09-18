@@ -94,7 +94,7 @@ public class LockEndRideController extends BaseController{
     }
 	
 	/**
-	 * 锁电量
+	 * 锁电量区间
 	 * @param startDate
 	 * @param endStart
 	 * @param macs
@@ -121,6 +121,37 @@ public class LockEndRideController extends BaseController{
         } catch (Exception e) {
 			logger.error("锁电量统计失败",e);
 			return responseFail("锁电量统计失败");
+		}
+    }
+	
+	/**
+	 * 结束计费payload details
+	 * @param startDate
+	 * @param endStart
+	 * @param macs
+	 * @return
+	 */
+	@RequestMapping(value="/payloadDetails",method=RequestMethod.GET)
+    public Object payloadDetails(String startDate,String endStart,String macs,String power){
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		Date start = null;
+		Date end = null;
+		String[] macArray = null;
+		try {
+			if(StringUtils.isNoneBlank(startDate)){
+				start = sdf.parse(startDate +" 00:00:00");
+			}
+			if(StringUtils.isNoneBlank(endStart)){
+				end = sdf.parse(endStart + " 23:59:59");
+			}
+			if(StringUtils.isNoneBlank(macs)){
+				macArray = macs.split(",");
+			}
+			PowerVo queryRangePower = lockEndRideService.queryLoadPayLoad(start, end, macArray);
+        	return responseSuccess("结束计费payload details成功", queryRangePower);
+        } catch (Exception e) {
+			logger.error("结束计费payload details失败",e);
+			return responseFail("结束计费payload details失败");
 		}
     }
 	

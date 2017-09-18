@@ -134,4 +134,42 @@
     from ota_status order by id desc
   </select>
   
+  <select id="statisDownloadAndInstall" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from ota_status where 1=1
+    <if test="macs != null">
+    	and mac_address in
+	    <foreach item="item" index="index" collection="macs" open="("
+				separator="," close=")">
+				#{item}
+		</foreach>
+    </if>
+    
+    <if test="startDate != null">
+		<![CDATA[   and DATE_FORMAT(create_time, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d')   ]]>
+    </if>
+    
+    <if test="endStart != null">
+		<![CDATA[   and DATE_FORMAT(create_time, '%Y-%m-%d') <=  DATE_FORMAT(#{endStart}, '%Y-%m-%d')   ]]>
+    </if>
+    
+    <if test="newHardwareVer != null">
+		and new_hardware_ver = #{newHardwareVer}
+    </if>
+    
+    <if test="newSoftwareVer != null">
+		and new_software_ver = #{newSoftwareVer}
+    </if>
+    
+    <if test="statuses != null">
+    	and status in
+	    <foreach item="item" index="index" collection="statuses" open="("
+				separator="," close=")">
+				#{item}
+		</foreach>
+    </if>
+    
+  </select>
+  
 </mapper>

@@ -1,6 +1,9 @@
 package socket.gsm.admin.dao;
 
+import java.util.Date;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
 
 import socket.gsm.admin.bean.OtaStatus;
 
@@ -18,4 +21,6 @@ public interface OtaStatusMapper {
     int updateByPrimaryKey(OtaStatus record);
 
 	List<OtaStatus> queryAll();
+	
+	List<OtaStatus> statisDownloadAndInstall(@Param("startDate")Date startDate, @Param("endStart")Date endStart, @Param("macs")String macs[], @Param("newHardwareVer")Integer newHardwareVer, @Param("newSoftwareVer")Integer newSoftwareVer, @Param("statuses")String statuses[]);
 }
