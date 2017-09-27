@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import socket.gsm.admin.commons.LoginUser;
 /**
  * 用户
  * @author fangyunhe
@@ -19,7 +21,7 @@ public class UserController extends BaseController{
 	@ResponseBody
 	@RequestMapping(value="/login",method=RequestMethod.POST)
     public Object login(String username,String password){
-		if("admin".equals(username) && "admin".equals(password)){
+		if(LoginUser.checkUser(username, password)){
 			String value = (String) getSession().getAttribute("user");
 			if(StringUtils.isNoneBlank(value) && "admin_admin".equals(value)){
 				return responseSuccess("已登录",null); 

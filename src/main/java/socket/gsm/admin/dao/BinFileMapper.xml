@@ -15,13 +15,15 @@
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="install__interval" jdbcType="DOUBLE" property="installInterval" />
     <result column="upgrade_interval" jdbcType="DOUBLE" property="upgradeInterval" />
+    <result column="white_list_mac" jdbcType="VARCHAR" property="whiteListMac" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="socket.gsm.admin.bean.BinFile">
     <result column="bin_data" jdbcType="LONGVARBINARY" property="binData" />
   </resultMap>
   <sql id="Base_Column_List">
     id, new_hardware_ver, new_software_ver, old_hardware_ver, old_software_ver, mark, 
-    create_time, title, update_time, crc, status, install__interval, upgrade_interval
+    create_time, title, update_time, crc, status, install__interval, upgrade_interval, 
+    white_list_mac
   </sql>
   <sql id="Blob_Column_List">
     bin_data
@@ -43,12 +45,14 @@
       old_hardware_ver, old_software_ver, mark, 
       create_time, title, update_time, 
       crc, status, install__interval, 
-      upgrade_interval, bin_data)
+      upgrade_interval, white_list_mac, bin_data
+      )
     values (#{id,jdbcType=INTEGER}, #{newHardwareVer,jdbcType=INTEGER}, #{newSoftwareVer,jdbcType=INTEGER}, 
       #{oldHardwareVer,jdbcType=INTEGER}, #{oldSoftwareVer,jdbcType=INTEGER}, #{mark,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{title,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{crc,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{installInterval,jdbcType=DOUBLE}, 
-      #{upgradeInterval,jdbcType=DOUBLE}, #{binData,jdbcType=LONGVARBINARY})
+      #{upgradeInterval,jdbcType=DOUBLE}, #{whiteListMac,jdbcType=VARCHAR}, #{binData,jdbcType=LONGVARBINARY}
+      )
   </insert>
   <insert id="insertSelective" parameterType="socket.gsm.admin.bean.BinFile">
     insert into bin_file
@@ -91,6 +95,9 @@
       </if>
       <if test="upgradeInterval != null">
         upgrade_interval,
+      </if>
+      <if test="whiteListMac != null">
+        white_list_mac,
       </if>
       <if test="binData != null">
         bin_data,
@@ -136,6 +143,9 @@
       <if test="upgradeInterval != null">
         #{upgradeInterval,jdbcType=DOUBLE},
       </if>
+      <if test="whiteListMac != null">
+        #{whiteListMac,jdbcType=VARCHAR},
+      </if>
       <if test="binData != null">
         #{binData,jdbcType=LONGVARBINARY},
       </if>
@@ -180,6 +190,9 @@
       <if test="upgradeInterval != null">
         upgrade_interval = #{upgradeInterval,jdbcType=DOUBLE},
       </if>
+      <if test="whiteListMac != null">
+        white_list_mac = #{whiteListMac,jdbcType=VARCHAR},
+      </if>
       <if test="binData != null">
         bin_data = #{binData,jdbcType=LONGVARBINARY},
       </if>
@@ -200,6 +213,7 @@
       status = #{status,jdbcType=INTEGER},
       install__interval = #{installInterval,jdbcType=DOUBLE},
       upgrade_interval = #{upgradeInterval,jdbcType=DOUBLE},
+      white_list_mac = #{whiteListMac,jdbcType=VARCHAR},
       bin_data = #{binData,jdbcType=LONGVARBINARY}
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -216,10 +230,10 @@
       crc = #{crc,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
       install__interval = #{installInterval,jdbcType=DOUBLE},
-      upgrade_interval = #{upgradeInterval,jdbcType=DOUBLE}
+      upgrade_interval = #{upgradeInterval,jdbcType=DOUBLE},
+      white_list_mac = #{whiteListMac,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  
   
   <!-- costom -->
   <select id="queryAll" resultMap="BaseResultMap">

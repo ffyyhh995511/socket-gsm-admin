@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartRequest;
 
 import socket.gsm.admin.bean.BinFile;
 import socket.gsm.admin.bean.OtaStatus;
+import socket.gsm.admin.commons.LoginUser;
 import socket.gsm.admin.commons.OpenPage;
 import socket.gsm.admin.service.BinFileService;
 
@@ -95,6 +97,81 @@ public class BinFileController extends BaseController{
 			logger.error("删除失败",e);
 		}
         return responseFail("删除失败");
+    }
+	
+	
+	/**
+	 * 编辑固件记录状态
+	 * @param id
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/editStatusPassTest",method=RequestMethod.POST)
+    public Object editStatus(Integer id){
+		if(id == null){
+			return responseParamFail("参数不合法");
+		}
+		String value = (String) getRequest().getSession().getAttribute("user");
+		if(!LoginUser.checkAdminUser(value)){
+			return responseFail("没有权限");
+		}
+        try {
+        	int res = binFileService.editStatusPassTest(id);
+        	if(res > 0){
+        		return responseSuccess("编辑状态成功",null);
+        	}
+        } catch (Exception e) {
+			logger.error("编辑状态失败",e);
+		}
+        return responseFail("编辑状态失败");
+    }
+	
+	/**
+	 * 固件白名单
+	 * @param id
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/editWhileListMac",method=RequestMethod.POST)
+    public Object editWhileListMac(Integer id,String whiteListMac){
+		if(id == null || StringUtils.isBlank(whiteListMac)){
+			return responseParamFail("参数不合法");
+		}
+		String value = (String) getRequest().getSession().getAttribute("user");
+		if(!LoginUser.checkAdminUser(value)){
+			return responseFail("没有权限");
+		}
+        try {
+        	int res = binFileService.editWhileListMac(id,whiteListMac);
+        	if(res > 0){
+        		return responseSuccess("固件白名单编辑成功",null);
+        	}
+        } catch (Exception e) {
+			logger.error("固件白名单编辑失败",e);
+		}
+        return responseFail("固件白名单编辑失败");
+    }
+	
+	/**
+	 * 通过id查看
+	 * @param id
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/getById",method=RequestMethod.GET)
+    public Object getById(Integer id){
+		if(id == null){
+			return responseParamFail("参数不合法");
+		}
+        try {
+        	BinFile binFile = binFileService.getById(id);
+        	if(binFile != null){
+        		return responseSuccess("通过id获取详细",binFile);
+        	}
+        } catch (Exception e) {
+			logger.error("通过id获取详细失败",e);
+		}
+        return responseFail("通过id获取详细失败");
     }
 	
 }

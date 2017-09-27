@@ -12,6 +12,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.alibaba.fastjson.JSONObject;
+
+import socket.gsm.admin.commons.LoginUser;
 /**
  * 登陆拦截
  * @author fangyunhe
@@ -23,7 +25,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter{
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		String value = (String) request.getSession().getAttribute("user");
-		if("admin_admin".equals(value)){
+		if(LoginUser.checkSessionUser(value)){
 			return true;
 		}else{
 			Map<String, Object> map = new HashMap<String, Object>();

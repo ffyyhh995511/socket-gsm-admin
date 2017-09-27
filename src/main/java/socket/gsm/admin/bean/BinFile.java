@@ -29,6 +29,8 @@ public class BinFile {
 
     private Double upgradeInterval;
 
+    private String whiteListMac;
+
     private byte[] binData;
 
     public Integer getId() {
@@ -133,6 +135,14 @@ public class BinFile {
 
     public void setUpgradeInterval(Double upgradeInterval) {
         this.upgradeInterval = upgradeInterval;
+    }
+
+    public String getWhiteListMac() {
+        return whiteListMac;
+    }
+
+    public void setWhiteListMac(String whiteListMac) {
+        this.whiteListMac = whiteListMac == null ? null : whiteListMac.trim();
     }
 
     public byte[] getBinData() {

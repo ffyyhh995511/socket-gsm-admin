@@ -134,4 +134,28 @@ public class BinFileService {
 	    
 	    return OpenPage.buildPage(p);
 	}
+
+	public int editStatusPassTest(Integer id) {
+		//测试通过
+		int status = 1;
+		BinFile binFile = new BinFile();
+		binFile.setId(id);
+		binFile.setUpdateTime(new Date());
+		binFile.setStatus(status);
+		return binFileMapper.updateByPrimaryKeySelective(binFile);
+	}
+
+	public int editWhileListMac(Integer id, String whiteListMac) {
+		BinFile binFile = new BinFile();
+		binFile.setId(id);
+		binFile.setUpdateTime(new Date());
+		binFile.setWhiteListMac(whiteListMac);
+		return binFileMapper.updateByPrimaryKeySelective(binFile);
+	}
+
+	public BinFile getById(Integer id) {
+		BinFile selectByPrimaryKey = binFileMapper.selectByPrimaryKey(id);
+		selectByPrimaryKey.setBinData(null);
+		return selectByPrimaryKey;
+	}
 }
