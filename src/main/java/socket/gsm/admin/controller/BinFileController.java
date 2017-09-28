@@ -88,6 +88,10 @@ public class BinFileController extends BaseController{
 		if(id == null){
 			return responseParamFail("参数不合法");
 		}
+		String value = (String) getRequest().getSession().getAttribute("user");
+		if(!LoginUser.checkAdminUser(value)){
+			return responseFail("没有权限");
+		}
         try {
         	int res = binFileService.delete(id);
         	if(res > 0){
@@ -134,7 +138,7 @@ public class BinFileController extends BaseController{
 	@ResponseBody
 	@RequestMapping(value="/editWhileListMac",method=RequestMethod.POST)
     public Object editWhileListMac(Integer id,String whiteListMac){
-		if(id == null || StringUtils.isBlank(whiteListMac)){
+		if(id == null){
 			return responseParamFail("参数不合法");
 		}
 		String value = (String) getRequest().getSession().getAttribute("user");

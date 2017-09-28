@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 /**
  * ota上报相关操作
@@ -25,13 +26,13 @@ public class OtaStatusService {
 	@Resource
 	OtaStatusMapper otaStatusMapper;
 	
-	public OpenPage queryAll(OtaStatus otaStatus,Integer pageNum,Integer pageSize){
-		
+	public OpenPage queryAll(OtaStatus otaStatus,Integer pageNum,Integer pageSize,Date start,Date end,String status,String[] macs){
 	    PageHelper.startPage(pageNum, pageSize);
-
-	    List<OtaStatus> list = otaStatusMapper.queryAll();
+	    List<OtaStatus> list = otaStatusMapper.queryAll(start,end,status,macs);
+	    for(OtaStatus item : list){
+	    	item.setStatusMsg(getStatusMsg(item.getStatus()));
+	    }
 	    Page p = ((Page) list);
-	    
 	    return OpenPage.buildPage(p);
 	}
 	
@@ -64,5 +65,51 @@ public class OtaStatusService {
 		vo.setDownloadFail(downloadFailList.size());
 		vo.setDownloadSucc(downloadSuccList.size());
 		return vo;
+	}
+	
+	/**
+	 * #  0：安装失败
+	 * #  1：安装成功
+	 * #  2：单包crc错误
+	 * #  3：整包crc错误
+	 * #  4：下载完成
+	 * #  5：解析出来的包id不是请求id
+	 * #  6：易客不需要升级
+	 * @param status
+	 * @return
+	 */
+	private String getStatusMsg(String statusStr){
+		if(StringUtils.isBlank(statusStr)){
+			return "未定义";
+		}
+		int status = Integer.parseInt(statusStr);
+		String msg = "";
+		switch (status) {
+		case 0:
+			msg = "安装失败";
+			break;
+		case 1:
+			msg = "安装成功";
+			break;
+		case 2:
+			msg = "单包crc错误";
+			break;
+		case 3:
+			msg = "整包crc错误";
+			break;
+		case 4:
+			msg = "下载完成";
+			break;
+		case 5:
+			msg = "解析出来的包id不是请求id";
+			break;
+		case 6:
+			msg = "易客不需要升级";
+			break;
+		default:
+			msg = "未定义";
+			break;
+		}
+		return msg;
 	}
 }

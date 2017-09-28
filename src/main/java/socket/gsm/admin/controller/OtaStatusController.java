@@ -44,12 +44,28 @@ public class OtaStatusController extends BaseController{
 	 */
 	@ResponseBody
 	@RequestMapping(value="/queryAll",method=RequestMethod.GET)
-    public Object queryAll(OtaStatus otaStatus,Integer pageNum,Integer pageSize){  
+    public Object queryAll(OtaStatus otaStatus,Integer pageNum,Integer pageSize,String startTime,String endTime,String status,String macs){  
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		pageNum = pageNum == null ? 1 : pageNum;
 		pageSize = pageSize == null ? 10 :pageSize; 
 		pageSize = pageSize > 500 ? 500 : pageSize;
+		Date start = null;
+		Date end = null;
+		String[] macArray = null;
         try {
-        	OpenPage page = otaStatusService.queryAll(otaStatus, pageNum, pageSize);
+        	if(StringUtils.isNoneBlank(startTime)){
+				start = sdf.parse(startTime +" 00:00:00");
+			}
+			if(StringUtils.isNoneBlank(endTime)){
+				end = sdf.parse(endTime + " 23:59:59");
+			}
+			if(StringUtils.isNoneBlank(macs)){
+				macArray = macs.split(",");
+			}
+			if("-1".equals(status)){
+				status = null;
+			}
+        	OpenPage page = otaStatusService.queryAll(otaStatus, pageNum, pageSize,start,end,status,macArray);
         	return responseSuccess("成功", page);
         } catch (Exception e) {
 			logger.error("查询失败",e);

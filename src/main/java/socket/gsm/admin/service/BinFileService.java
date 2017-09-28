@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -12,6 +13,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,10 +24,10 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 
 import socket.gsm.admin.bean.BinFile;
-import socket.gsm.admin.bean.OtaStatus;
 import socket.gsm.admin.commons.OpenPage;
 import socket.gsm.admin.dao.BinFileMapper;
 import socket.gsm.admin.utils.CrcUtil;
+import socket.gsm.admin.vo.BinFileVo;
 
 @Service
 public class BinFileService {
@@ -53,6 +55,7 @@ public class BinFileService {
 		int code = CrcUtil.crc_16_CCITT_False(bin, bin.length);
 		binFile.setCrc(String.valueOf(code));
 		binFile.setBinData(bin);
+		binFile.setStatus(0);
 		return binFileMapper.insert(binFile);
 	}
 	
@@ -126,12 +129,11 @@ public class BinFileService {
 		return binByte;
 	}
 
-	public OpenPage queryAll(BinFile binFile, Integer pageNum, Integer pageSize) {
+	public OpenPage queryAll(BinFile binFile, Integer pageNum, Integer pageSize) throws IllegalAccessException, InvocationTargetException {
 		PageHelper.startPage(pageNum, pageSize);
 
 	    List<BinFile> list = binFileMapper.queryAll();
 	    Page p = ((Page) list);
-	    
 	    return OpenPage.buildPage(p);
 	}
 
@@ -158,4 +160,7 @@ public class BinFileService {
 		selectByPrimaryKey.setBinData(null);
 		return selectByPrimaryKey;
 	}
+	
+	
+	
 }

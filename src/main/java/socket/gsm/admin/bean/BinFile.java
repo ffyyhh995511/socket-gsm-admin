@@ -32,7 +32,7 @@ public class BinFile {
     private String whiteListMac;
 
     private byte[] binData;
-
+    
     public Integer getId() {
         return id;
     }
@@ -152,4 +152,5 @@ public class BinFile {
     public void setBinData(byte[] binData) {
         this.binData = binData;
     }
+    
 }

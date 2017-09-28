@@ -18,6 +18,8 @@ public class OtaStatus {
     private String status;
 
     private Date createTime;
+    
+    private String statusMsg;
 
     public Integer getId() {
         return id;
@@ -82,4 +84,14 @@ public class OtaStatus {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
+	public String getStatusMsg() {
+		return statusMsg;
+	}
+
+	public void setStatusMsg(String statusMsg) {
+		this.statusMsg = statusMsg;
+	}
+    
+    
 }

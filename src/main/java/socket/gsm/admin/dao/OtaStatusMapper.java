@@ -20,7 +20,7 @@ public interface OtaStatusMapper {
 
     int updateByPrimaryKey(OtaStatus record);
 
-	List<OtaStatus> queryAll();
+	List<OtaStatus> queryAll(@Param("startDate")Date startDate,@Param("endStart")Date endStart,@Param("status")String status,@Param("macs")String[] macs);
 	
 	List<OtaStatus> statisDownloadAndInstall(@Param("startDate")Date startDate, @Param("endStart")Date endStart, @Param("macs")String macs[], @Param("newHardwareVer")Integer newHardwareVer, @Param("newSoftwareVer")Integer newSoftwareVer, @Param("statuses")String statuses[]);
 }
