@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -25,7 +26,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter{
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		String value = (String) request.getSession().getAttribute("user");
-		if(LoginUser.checkSessionUser(value)){
+		if(StringUtils.isNoneBlank(value) && LoginUser.checkSessionUser(value)){
 			return true;
 		}else{
 			Map<String, Object> map = new HashMap<String, Object>();

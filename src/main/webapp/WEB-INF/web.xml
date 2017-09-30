@@ -61,17 +61,11 @@
 		<url-pattern>*.action</url-pattern>
 	</filter-mapping>
 
-
-	<welcome-file-list>
-		<welcome-file>index.jsp</welcome-file>
-	</welcome-file-list>
-
 	<listener>
 		<description>Spring监听器</description>
 		<listener-class>org.springframework.web.context.ContextLoaderListener
 		</listener-class>
 	</listener>
-
 
 	<!-- ContextLoaderListener初始化Spring上下文时需要使用到的contextConfigLocation参数 -->
 	<context-param>
@@ -95,6 +89,14 @@
 		<servlet-name>mvc</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+	
+	<session-config>
+         <session-timeout>30</session-timeout>
+    </session-config>
+    
+    <welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
 
 </web-app>
 
