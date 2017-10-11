@@ -141,7 +141,7 @@ public class LockLocationService {
 			if(!lockLocation.getLocation().equals("定位失败")){
 				gpsSucc++;
 			}
-			if(StringUtils.isNoneBlank(lockLocation.getLbsLocation())){
+			if(StringUtils.isNoneBlank(lockLocation.getLbs())){
 				lbsSucc++;
 			}
 		}
