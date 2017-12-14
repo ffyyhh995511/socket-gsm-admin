@@ -186,6 +186,13 @@
 				<env>prod-tengxunyun</env>
 			</properties>
 		</profile>
+		<profile>
+			<id>prod-overseas-thailand</id>
+			<properties>
+				<env>prod-overseas-thailand</env>
+			</properties>
+		</profile>
+		
 		
 	</profiles>
 
@@ -201,6 +208,7 @@
 					<exclude>local/*</exclude>
 					<exclude>qa/*</exclude>
 					<exclude>prod-tengxunyun/*</exclude>
+					<exclude>prod-overseas-thailand/*</exclude>
 					<exclude>generator.xml</exclude>
 					<exclude>mybatis-generator-core-1.3.3.jar</exclude>
 				</excludes>
