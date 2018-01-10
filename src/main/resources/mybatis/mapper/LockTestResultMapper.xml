@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="socket.gsm.admin.dao.LockTestResultMapper">
+  <resultMap id="BaseResultMap" type="socket.gsm.admin.bean.LockTestResult">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="scan_bluetooth" jdbcType="INTEGER" property="scanBluetooth" />
+    <result column="connect_bluetooth" jdbcType="INTEGER" property="connectBluetooth" />
+    <result column="open_lock" jdbcType="INTEGER" property="openLock" />
+    <result column="allow_lock" jdbcType="INTEGER" property="allowLock" />
+    <result column="close_lock" jdbcType="INTEGER" property="closeLock" />
+    <result column="test_2g_rssi" jdbcType="VARCHAR" property="test2gRssi" />
+    <result column="test_gps_rssi" jdbcType="VARCHAR" property="testGpsRssi" />
+    <result column="test_dialup" jdbcType="INTEGER" property="testDialup" />
+    <result column="lock_version" jdbcType="VARCHAR" property="lockVersion" />
+    <result column="lock_power" jdbcType="VARCHAR" property="lockPower" />
+    <result column="mcu_version" jdbcType="VARCHAR" property="mcuVersion" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="mac_address" jdbcType="VARCHAR" property="macAddress" />
+    <result column="uid" jdbcType="VARCHAR" property="uid" />
+    <result column="sim_card_info" jdbcType="VARCHAR" property="simCardInfo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, scan_bluetooth, connect_bluetooth, open_lock, allow_lock, close_lock, test_2g_rssi, 
+    test_gps_rssi, test_dialup, lock_version, lock_power, mcu_version, create_date, mac_address, 
+    uid, sim_card_info
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from lock_test_result
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from lock_test_result
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="socket.gsm.admin.bean.LockTestResult">
+    insert into lock_test_result (id, scan_bluetooth, connect_bluetooth, 
+      open_lock, allow_lock, close_lock, 
+      test_2g_rssi, test_gps_rssi, test_dialup, 
+      lock_version, lock_power, mcu_version, 
+      create_date, mac_address, uid, 
+      sim_card_info)
+    values (#{id,jdbcType=VARCHAR}, #{scanBluetooth,jdbcType=INTEGER}, #{connectBluetooth,jdbcType=INTEGER}, 
+      #{openLock,jdbcType=INTEGER}, #{allowLock,jdbcType=INTEGER}, #{closeLock,jdbcType=INTEGER}, 
+      #{test2gRssi,jdbcType=VARCHAR}, #{testGpsRssi,jdbcType=VARCHAR}, #{testDialup,jdbcType=INTEGER}, 
+      #{lockVersion,jdbcType=VARCHAR}, #{lockPower,jdbcType=VARCHAR}, #{mcuVersion,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{macAddress,jdbcType=VARCHAR}, #{uid,jdbcType=VARCHAR}, 
+      #{simCardInfo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="socket.gsm.admin.bean.LockTestResult">
+    insert into lock_test_result
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="scanBluetooth != null">
+        scan_bluetooth,
+      </if>
+      <if test="connectBluetooth != null">
+        connect_bluetooth,
+      </if>
+      <if test="openLock != null">
+        open_lock,
+      </if>
+      <if test="allowLock != null">
+        allow_lock,
+      </if>
+      <if test="closeLock != null">
+        close_lock,
+      </if>
+      <if test="test2gRssi != null">
+        test_2g_rssi,
+      </if>
+      <if test="testGpsRssi != null">
+        test_gps_rssi,
+      </if>
+      <if test="testDialup != null">
+        test_dialup,
+      </if>
+      <if test="lockVersion != null">
+        lock_version,
+      </if>
+      <if test="lockPower != null">
+        lock_power,
+      </if>
+      <if test="mcuVersion != null">
+        mcu_version,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="macAddress != null">
+        mac_address,
+      </if>
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="simCardInfo != null">
+        sim_card_info,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="scanBluetooth != null">
+        #{scanBluetooth,jdbcType=INTEGER},
+      </if>
+      <if test="connectBluetooth != null">
+        #{connectBluetooth,jdbcType=INTEGER},
+      </if>
+      <if test="openLock != null">
+        #{openLock,jdbcType=INTEGER},
+      </if>
+      <if test="allowLock != null">
+        #{allowLock,jdbcType=INTEGER},
+      </if>
+      <if test="closeLock != null">
+        #{closeLock,jdbcType=INTEGER},
+      </if>
+      <if test="test2gRssi != null">
+        #{test2gRssi,jdbcType=VARCHAR},
+      </if>
+      <if test="testGpsRssi != null">
+        #{testGpsRssi,jdbcType=VARCHAR},
+      </if>
+      <if test="testDialup != null">
+        #{testDialup,jdbcType=INTEGER},
+      </if>
+      <if test="lockVersion != null">
+        #{lockVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="lockPower != null">
+        #{lockPower,jdbcType=VARCHAR},
+      </if>
+      <if test="mcuVersion != null">
+        #{mcuVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="macAddress != null">
+        #{macAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="simCardInfo != null">
+        #{simCardInfo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="socket.gsm.admin.bean.LockTestResult">
+    update lock_test_result
+    <set>
+      <if test="scanBluetooth != null">
+        scan_bluetooth = #{scanBluetooth,jdbcType=INTEGER},
+      </if>
+      <if test="connectBluetooth != null">
+        connect_bluetooth = #{connectBluetooth,jdbcType=INTEGER},
+      </if>
+      <if test="openLock != null">
+        open_lock = #{openLock,jdbcType=INTEGER},
+      </if>
+      <if test="allowLock != null">
+        allow_lock = #{allowLock,jdbcType=INTEGER},
+      </if>
+      <if test="closeLock != null">
+        close_lock = #{closeLock,jdbcType=INTEGER},
+      </if>
+      <if test="test2gRssi != null">
+        test_2g_rssi = #{test2gRssi,jdbcType=VARCHAR},
+      </if>
+      <if test="testGpsRssi != null">
+        test_gps_rssi = #{testGpsRssi,jdbcType=VARCHAR},
+      </if>
+      <if test="testDialup != null">
+        test_dialup = #{testDialup,jdbcType=INTEGER},
+      </if>
+      <if test="lockVersion != null">
+        lock_version = #{lockVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="lockPower != null">
+        lock_power = #{lockPower,jdbcType=VARCHAR},
+      </if>
+      <if test="mcuVersion != null">
+        mcu_version = #{mcuVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="macAddress != null">
+        mac_address = #{macAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null">
+        uid = #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="simCardInfo != null">
+        sim_card_info = #{simCardInfo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="socket.gsm.admin.bean.LockTestResult">
+    update lock_test_result
+    set scan_bluetooth = #{scanBluetooth,jdbcType=INTEGER},
+      connect_bluetooth = #{connectBluetooth,jdbcType=INTEGER},
+      open_lock = #{openLock,jdbcType=INTEGER},
+      allow_lock = #{allowLock,jdbcType=INTEGER},
+      close_lock = #{closeLock,jdbcType=INTEGER},
+      test_2g_rssi = #{test2gRssi,jdbcType=VARCHAR},
+      test_gps_rssi = #{testGpsRssi,jdbcType=VARCHAR},
+      test_dialup = #{testDialup,jdbcType=INTEGER},
+      lock_version = #{lockVersion,jdbcType=VARCHAR},
+      lock_power = #{lockPower,jdbcType=VARCHAR},
+      mcu_version = #{mcuVersion,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      mac_address = #{macAddress,jdbcType=VARCHAR},
+      uid = #{uid,jdbcType=VARCHAR},
+      sim_card_info = #{simCardInfo,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- Costum -->
+  
+  <select id="queryInMacWithDate" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from lock_test_result
+    where 1 = 1
+    <if test="macs != null">
+      and mac_address in
+      <foreach item="item" index="index" collection="macs" open="("
+        separator="," close=")">
+        #{item}
+    </foreach>
+    </if>
+    
+    <if test="start != null">
+    <![CDATA[   and DATE_FORMAT(create_date, '%Y-%m-%d') >=  DATE_FORMAT(#{start}, '%Y-%m-%d')   ]]>
+    </if>
+    
+    <if test="end != null">
+    <![CDATA[   and DATE_FORMAT(create_date, '%Y-%m-%d') <=  DATE_FORMAT(#{end}, '%Y-%m-%d')   ]]>
+    </if>
+    
+  	order by create_date desc
+  
+  </select>
+  
+</mapper>

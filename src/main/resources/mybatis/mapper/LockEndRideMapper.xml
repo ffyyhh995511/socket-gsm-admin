@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="socket.gsm.admin.dao.LockEndRideMapper">
+  <resultMap id="BaseResultMap" type="socket.gsm.admin.bean.LockEndRide">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="mac" jdbcType="VARCHAR" property="mac" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="open_lock_time" jdbcType="TIMESTAMP" property="openLockTime" />
+    <result column="close_lock_time" jdbcType="TIMESTAMP" property="closeLockTime" />
+    <result column="send_request_time" jdbcType="TIMESTAMP" property="sendRequestTime" />
+    <result column="open_period" jdbcType="INTEGER" property="openPeriod" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="socket.gsm.admin.bean.LockEndRide">
+    <result column="result" jdbcType="LONGVARCHAR" property="result" />
+    <result column="payload" jdbcType="LONGVARCHAR" property="payload" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, mac, create_date, update_date,open_lock_time, close_lock_time, send_request_time, open_period
+  </sql>
+  <sql id="Blob_Column_List">
+    result,payload
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from lock_end_ride
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from lock_end_ride
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="socket.gsm.admin.bean.LockEndRide">
+    insert into lock_end_ride (id, mac, create_date, 
+      update_date, result)
+    values (#{id,jdbcType=VARCHAR}, #{mac,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateDate,jdbcType=TIMESTAMP}, #{result,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="socket.gsm.admin.bean.LockEndRide">
+    insert into lock_end_ride
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="mac != null">
+        mac,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="result != null">
+        result,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="mac != null">
+        #{mac,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="result != null">
+        #{result,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="socket.gsm.admin.bean.LockEndRide">
+    update lock_end_ride
+    <set>
+      <if test="mac != null">
+        mac = #{mac,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="result != null">
+        result = #{result,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="socket.gsm.admin.bean.LockEndRide">
+    update lock_end_ride
+    set mac = #{mac,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      result = #{result,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="socket.gsm.admin.bean.LockEndRide">
+    update lock_end_ride
+    set mac = #{mac,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="queryInMacWithDate" resultMap="ResultMapWithBLOBs">
+  	select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from lock_end_ride
+    where 1 = 1
+    <if test="macs != null">
+    	and mac in
+	    <foreach item="item" index="index" collection="macs" open="("
+				separator="," close=")">
+				#{item}
+		</foreach>
+    </if>
+    
+    <if test="start != null">
+		<![CDATA[   and DATE_FORMAT(create_date, '%Y-%m-%d') >=  DATE_FORMAT(#{start}, '%Y-%m-%d')   ]]>
+    </if>
+    
+    <if test="end != null">
+		<![CDATA[   and DATE_FORMAT(create_date, '%Y-%m-%d') <=  DATE_FORMAT(#{end}, '%Y-%m-%d')   ]]>
+    </if>
+    
+	order by create_date desc
+	
+  </select>
+  
+</mapper>

@@ -1,27 +1,4 @@
-/.settings/
-/target/
-/src/test/
-/weblog/
-# /src/main/webapp/static/
-# built application files  
-*.apk
-*.ap_
-generator.xml
-mybatis-generator-core-1.3.3.jar
-  
-# files for the dex VM  
-*.dex
-  
-# Java class files  
-*.class
-*.jar
-  
-# generated files  
-bin/
-gen/
-  
-# Eclipse project files
+.settings
+target
 .classpath
-.project 
-.DS_Store
 .project
