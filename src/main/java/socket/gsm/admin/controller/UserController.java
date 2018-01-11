@@ -41,7 +41,7 @@ public class UserController extends BaseController {
 			return responseFail("账号密码为空");
 		}
 		try {
-			boolean result = webUserService.webLogin(username, password,response);
+			boolean result = webUserService.webLogin(username, password, request, response);
 			if (result) {
 				return responseSuccess("登录成功", username);
 			}
@@ -53,8 +53,8 @@ public class UserController extends BaseController {
 
 	@ResponseBody
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public Object logout() {
-		getSession().removeAttribute("user");
+	public Object logout(HttpServletRequest request) {
+		request.getSession().removeAttribute("token");
 		return responseSuccess("退出成功", null);
 	}
 
