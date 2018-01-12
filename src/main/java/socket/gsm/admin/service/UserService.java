@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSON;
 
 import feign.Request;
+import socket.gsm.admin.config.BusinessConfig;
 import socket.gsm.admin.dto.WebUserDto;
 import socket.gsm.admin.response.ResponseEnum;
 import socket.gsm.admin.service.cloud.WebUserService;
@@ -27,7 +28,7 @@ public class UserService {
 	WebUserService webUserService;
 
 	public boolean webLogin(String username, String password, HttpServletRequest request, HttpServletResponse response) {
-		Object upLogin = webUserService.upLogin(username, password);
+		Object upLogin = webUserService.upLogin(username, password,BusinessConfig.getUserAppId(),BusinessConfig.getUserAppSecret());
 		String jsonString = JSON.toJSONString(upLogin);
 		System.out.println(jsonString);
 		WebUserDto parseObject = JSON.parseObject(jsonString, WebUserDto.class);

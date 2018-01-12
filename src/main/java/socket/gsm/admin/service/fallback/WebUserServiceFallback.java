@@ -9,8 +9,9 @@ import socket.gsm.admin.service.cloud.WebUserService;
 public class WebUserServiceFallback implements WebUserService{
 
 	@Override
-	public Object upLogin(String username, String password) {
+	public Object upLogin(String username, String password, String appId, String appSecret) {
 		return Response.interiorErrorResponse();
 	}
+
 
 }
