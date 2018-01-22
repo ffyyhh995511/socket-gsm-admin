@@ -16,8 +16,11 @@ import socket.gsm.admin.service.fallback.WebUserServiceFallback;
 @FeignClient(name = "CLOUD-SERVICE-USER", fallback = WebUserServiceFallback.class)
 public interface WebUserService {
 
-	@RequestMapping(value = "/web/user/up/login", method = RequestMethod.POST)
+	@RequestMapping(value = "/user/login", method = RequestMethod.POST)
 	Object upLogin(@RequestParam("username") String username, @RequestParam("password") String password,
 			@RequestHeader("appId") String appId, @RequestHeader("appSecret") String appSecret);
-
+	
+	@RequestMapping(value = "/check/token", method = RequestMethod.GET)
+	Object checkToken(@RequestParam("token") String token, @RequestHeader("appId") String appId,
+			@RequestHeader("appSecret") String appSecret);
 }

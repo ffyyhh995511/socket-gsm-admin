@@ -13,5 +13,9 @@ public class WebUserServiceFallback implements WebUserService{
 		return Response.interiorErrorResponse();
 	}
 
+	@Override
+	public Object checkToken(String ticket, String appId, String appSecret) {
+		return Response.interiorErrorResponse();
+	}
 
 }

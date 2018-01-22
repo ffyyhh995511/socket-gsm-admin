@@ -124,7 +124,7 @@ public class BaseController extends HandlerInterceptorAdapter{
 	 */
 	public Map<String, Object> responseParamFail(String msg) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("status", false);
+		map.put("status", "501");
 		if(StringUtils.isBlank(msg)){
 			map.put("msg", "Parameter error");
 		}else{
@@ -141,7 +141,7 @@ public class BaseController extends HandlerInterceptorAdapter{
 	 */
 	public Map<String, Object> responseFail(String msg) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("status", false);
+		map.put("status", "500");
 		map.put("msg", msg);
 		return map;
 	}
@@ -154,7 +154,7 @@ public class BaseController extends HandlerInterceptorAdapter{
 	 */
 	public Map<String, Object> responseSuccess(String msg, Object object) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("status", true);
+		map.put("status", "200");
 		map.put("msg", msg);
 		map.put("data", object);
 		return map;

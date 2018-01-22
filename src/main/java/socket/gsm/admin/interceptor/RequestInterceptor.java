@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -12,7 +13,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+
+import socket.gsm.admin.config.BusinessConfig;
+import socket.gsm.admin.dto.WebUserDto;
+import socket.gsm.admin.response.ResponseEnum;
+import socket.gsm.admin.service.cloud.WebUserService;
 
 /**
  * 登陆拦截
@@ -21,6 +28,9 @@ import com.alibaba.fastjson.JSONObject;
  *
  */
 public class RequestInterceptor implements HandlerInterceptor {
+	
+	@Resource
+	WebUserService webUserService;
 
 	@Override
 	public void afterCompletion(HttpServletRequest arg0, HttpServletResponse arg1, Object arg2, Exception arg3)
@@ -34,12 +44,15 @@ public class RequestInterceptor implements HandlerInterceptor {
 	}
 	
 	public boolean checkToken(HttpServletRequest request) {
-		String headerToken = request.getHeader("token");
-		String token = (String) request.getSession().getAttribute("token");
-		if(StringUtils.isBlank(headerToken)) {
+		String token = request.getHeader("token");
+		if(StringUtils.isBlank(token)) {
 			return false;
 		}
-		if(headerToken.equals(token)) {
+		
+		Object checkToken = webUserService.checkToken(token, BusinessConfig.getUserAppId(),BusinessConfig.getUserAppSecret());
+		String jsonString = JSON.toJSONString(checkToken);
+		WebUserDto parseObject = JSON.parseObject(jsonString, WebUserDto.class);
+		if(parseObject.getCode() == (ResponseEnum.STATUS001.getCode())) {
 			return true;
 		}
 		return false;
@@ -52,9 +65,8 @@ public class RequestInterceptor implements HandlerInterceptor {
 			return true;
 		} else {
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("status", false);
-			map.put("code", "001");
-			map.put("msg", "用户没有登录");
+			map.put("status", "001");
+			map.put("msg", "校验不通过，请重新登录");
 			// 将实体对象转换为JSON Object转换
 			JSONObject responseJSONObject = (JSONObject) JSONObject.toJSON(map);
 			response.setCharacterEncoding("UTF-8");
