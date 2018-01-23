@@ -35,7 +35,7 @@ public class UserController extends BaseController {
 	UserService webUserService;
 
 	@ResponseBody
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public Object login(String username, String password, HttpServletRequest request, HttpServletResponse response) {
 		if (!StringUtils.isNoneBlank(username, password)) {
 			return responseFail("账号密码为空");

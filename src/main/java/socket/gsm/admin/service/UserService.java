@@ -35,9 +35,10 @@ public class UserService {
 		if(parseObject.getCode() == (ResponseEnum.STATUS001.getCode())) {
 			log.info("token={}",parseObject.getData().getToken());
 			Cookie cookie = new Cookie("token", parseObject.getData().getToken());
-			cookie.setDomain("OTA");
+			cookie.setDomain("lock4th-admin");
 			//一天的过期时间
 			cookie.setMaxAge(3600 * 24);
+			cookie.setPath("/");
 			response.addCookie(cookie);
 			//设置会话
 			//HttpSession session = request.getSession();
