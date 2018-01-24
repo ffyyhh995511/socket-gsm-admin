@@ -6,12 +6,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
 
 import lombok.extern.slf4j.Slf4j;
 import socket.gsm.admin.config.BusinessConfig;
+import socket.gsm.admin.controller.BaseController;
 import socket.gsm.admin.dto.WebUserDto;
 import socket.gsm.admin.response.ResponseEnum;
 import socket.gsm.admin.service.cloud.WebUserService;
@@ -24,18 +26,21 @@ import socket.gsm.admin.service.cloud.WebUserService;
 @Slf4j
 @Service
 public class UserService {
-
+	
+	@Value("${domain}")
+	String domain;
+	
 	@Resource
 	WebUserService webUserService;
 
-	public boolean webLogin(String username, String password, HttpServletRequest request, HttpServletResponse response) {
+	public Object webLogin(String username, String password, HttpServletRequest request, HttpServletResponse response) {
 		Object upLogin = webUserService.upLogin(username, password,BusinessConfig.getUserAppId(),BusinessConfig.getUserAppSecret());
 		String jsonString = JSON.toJSONString(upLogin);
-		WebUserDto parseObject = JSON.parseObject(jsonString, WebUserDto.class);
-		if(parseObject.getCode() == (ResponseEnum.STATUS001.getCode())) {
-			log.info("token={}",parseObject.getData().getToken());
-			Cookie cookie = new Cookie("token", parseObject.getData().getToken());
-			cookie.setDomain("lock4th-admin");
+		WebUserDto userDto = JSON.parseObject(jsonString, WebUserDto.class);
+		if(userDto.getCode() == (ResponseEnum.STATUS001.getCode())) {
+			log.info("token={}",userDto.getData().getToken());
+			Cookie cookie = new Cookie("token", userDto.getData().getToken());
+			cookie.setDomain(domain);
 			//一天的过期时间
 			cookie.setMaxAge(3600 * 24);
 			cookie.setPath("/");
@@ -45,8 +50,8 @@ public class UserService {
 			//一天的过期时间
 			//session.setMaxInactiveInterval(3600 * 24);
 			//session.setAttribute("token", parseObject.getData().getToken());
-			return true;
+			return BaseController.responseSuccess("登陆成功",userDto);
 		}
-		return false;
+		return BaseController.responseFail("账号密码错误");
 	}
 }

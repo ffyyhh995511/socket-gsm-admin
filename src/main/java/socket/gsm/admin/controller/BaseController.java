@@ -122,7 +122,7 @@ public class BaseController extends HandlerInterceptorAdapter{
 	 * @param msg
 	 * @return
 	 */
-	public Map<String, Object> responseParamFail(String msg) {
+	public static Map<String, Object> responseParamFail(String msg) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("status", "501");
 		if(StringUtils.isBlank(msg)){
@@ -139,7 +139,7 @@ public class BaseController extends HandlerInterceptorAdapter{
 	 * @param msg
 	 * @return
 	 */
-	public Map<String, Object> responseFail(String msg) {
+	public static Map<String, Object> responseFail(String msg) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("status", "500");
 		map.put("msg", msg);
@@ -152,7 +152,7 @@ public class BaseController extends HandlerInterceptorAdapter{
 	 * @param object
 	 * @return
 	 */
-	public Map<String, Object> responseSuccess(String msg, Object object) {
+	public static Map<String, Object> responseSuccess(String msg, Object object) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("status", "200");
 		map.put("msg", msg);
@@ -160,7 +160,7 @@ public class BaseController extends HandlerInterceptorAdapter{
 		return map;
 	}
 	
-	public Map<String, Object> responseSuccess() {
+	public static Map<String, Object> responseSuccess() {
 		return responseSuccess(null, null);
 	}
 }

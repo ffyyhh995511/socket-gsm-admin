@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import socket.gsm.admin.bean.LockLocation;
+import socket.gsm.admin.commons.OpenPage;
 import socket.gsm.admin.service.LockLocationService;
 import socket.gsm.admin.vo.LocationSummarizeVo;
 /***
@@ -35,8 +36,11 @@ public class LockLocationController extends BaseController{
 	 * @return
 	 */
 	@RequestMapping(value="/queryLockLocationDetail",method=RequestMethod.GET)
-    public Object queryLockLocationDetail(String startDate,String endStart,String macs){  
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+    public Object queryLockLocationDetail(String startDate,String endStart,String macs,Integer pageNum,Integer pageSize){  
+		pageNum = pageNum == null ? 1 : pageNum;
+		pageSize = pageSize == null ? 10 :pageSize; 
+		pageSize = pageSize > 500 ? 500 : pageSize;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date start = null;
 		Date end = null;
 		String[] macArray = null;
@@ -51,7 +55,7 @@ public class LockLocationController extends BaseController{
 				macArray = macs.split(",");
 			}
 			
-			List<LockLocation> queryInMacWithDate = LockLocationService.queryInMacWithDate(start, end, macArray);
+			OpenPage queryInMacWithDate = LockLocationService.queryInMacWithDate(start, end, macArray,pageNum, pageSize);
         	return responseSuccess("GPS定位情况明细成功", queryInMacWithDate);
         } catch (Exception e) {
 			logger.error("GPS定位情况明细失败",e);

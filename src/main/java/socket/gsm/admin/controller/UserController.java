@@ -35,16 +35,14 @@ public class UserController extends BaseController {
 	UserService webUserService;
 
 	@ResponseBody
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public Object login(String username, String password, HttpServletRequest request, HttpServletResponse response) {
 		if (!StringUtils.isNoneBlank(username, password)) {
 			return responseFail("账号密码为空");
 		}
 		try {
-			boolean result = webUserService.webLogin(username, password, request, response);
-			if (result) {
-				return responseSuccess("登录成功", username);
-			}
+			Object webLogin = webUserService.webLogin(username, password, request, response);
+			return webLogin;
 		} catch (Exception e) {
 			log.error("登陆报错", e);
 		}

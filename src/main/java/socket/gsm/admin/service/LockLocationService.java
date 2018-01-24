@@ -15,7 +15,11 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
 import socket.gsm.admin.bean.LockLocation;
+import socket.gsm.admin.commons.OpenPage;
 import socket.gsm.admin.dao.LockLocationMapper;
 import socket.gsm.admin.vo.LocationSummarizeVo;
 
@@ -39,8 +43,11 @@ public class LockLocationService {
 	 * @param macs
 	 * @return
 	 */
-	public List<LockLocation> queryInMacWithDate(Date start,Date end,String macs[]){
-		return locationMapper.queryInMacWithDate(start, end, macs);
+	public OpenPage queryInMacWithDate(Date start,Date end,String macs[],Integer pageNum,Integer pageSize){
+		PageHelper.startPage(pageNum, pageSize);
+		List<LockLocation> list = locationMapper.queryInMacWithDate(start, end, macs);
+		Page p = ((Page<LockLocation>) list);
+	    return OpenPage.buildPage(p);
 	}
 	
 	/**
