@@ -13,7 +13,6 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,7 +26,6 @@ import socket.gsm.admin.bean.BinFile;
 import socket.gsm.admin.commons.OpenPage;
 import socket.gsm.admin.dao.BinFileMapper;
 import socket.gsm.admin.utils.CrcUtil;
-import socket.gsm.admin.vo.BinFileVo;
 
 @Service
 public class BinFileService {
