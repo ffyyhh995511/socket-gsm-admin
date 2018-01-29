@@ -34,6 +34,11 @@ public class LockEndRide {
      * 锁梁打开时长（单位毫秒）
      */
     private Integer openPeriod;
+    
+    /**
+     * 关锁定位
+     */
+    private String location;
 
     public String getId() {
         return id;
@@ -113,6 +118,14 @@ public class LockEndRide {
 
 	public void setOpenPeriod(Integer openPeriod) {
 		this.openPeriod = openPeriod;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
     
     

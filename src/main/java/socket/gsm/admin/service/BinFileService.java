@@ -159,6 +159,4 @@ public class BinFileService {
 		return selectByPrimaryKey;
 	}
 	
-	
-	
 }

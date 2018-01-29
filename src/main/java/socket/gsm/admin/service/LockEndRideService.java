@@ -15,8 +15,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 
 import socket.gsm.admin.bean.LockEndRide;
+import socket.gsm.admin.bean.LockLocation;
+import socket.gsm.admin.commons.OpenPage;
 import socket.gsm.admin.dao.LockEndRideMapper;
 import socket.gsm.admin.vo.LockEndRideVo;
 import socket.gsm.admin.vo.PowerVo;
@@ -201,6 +205,13 @@ public class LockEndRideService {
 
 	public List<LockEndRide> queryLoadPayLoad(Date start, Date end, String[] macArray) {
 		return lockEndRideMapper.queryInMacWithDate(start,end,macArray);
+	}
+
+	public OpenPage lastTimeCloseInfo(Integer pageNum,Integer pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
+		List<LockEndRide> list = lockEndRideMapper.lastTimeCloseInfo();
+		Page<LockEndRide> p = ((Page<LockEndRide>) list);
+	    return OpenPage.buildPage(p);
 	}
 	
 	

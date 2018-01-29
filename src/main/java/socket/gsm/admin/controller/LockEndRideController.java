@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import socket.gsm.admin.bean.LockEndRide;
 import socket.gsm.admin.bean.LockLocation;
+import socket.gsm.admin.commons.OpenPage;
 import socket.gsm.admin.service.LockEndRideService;
 import socket.gsm.admin.vo.LockEndRideVo;
 import socket.gsm.admin.vo.PowerVo;
@@ -133,7 +134,7 @@ public class LockEndRideController extends BaseController{
 	 */
 	@RequestMapping(value="/payloadDetails",method=RequestMethod.GET)
     public Object payloadDetails(String startDate,String endStart,String macs,String power){
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date start = null;
 		Date end = null;
 		String[] macArray = null;
@@ -152,6 +153,26 @@ public class LockEndRideController extends BaseController{
         } catch (Exception e) {
 			logger.error("结束计费payload details失败",e);
 			return responseFail("结束计费payload details失败");
+		}
+    }
+	
+	/**
+	 * 每把锁的最新开锁记录信息
+	 * @param pageNum
+	 * @param pageSize
+	 * @return
+	 */
+	@RequestMapping(value="/lastTimeCloseInfo",method=RequestMethod.GET)
+    public Object lastTimeCloseInfo(Integer pageNum,Integer pageSize){
+		pageNum = pageNum == null ? 1 : pageNum;
+		pageSize = pageSize == null ? 10 :pageSize;
+		pageSize = pageSize > 500 ? 500 : pageSize;
+		try {
+			OpenPage lastTimeCloseInfo = lockEndRideService.lastTimeCloseInfo(pageNum, pageSize);
+        	return responseSuccess("每把锁最新开锁记录信息成功", lastTimeCloseInfo);
+        } catch (Exception e) {
+			logger.error("每把锁最新开锁记录信息失败",e);
+			return responseFail("每把锁最新开锁记录信息失败");
 		}
     }
 	

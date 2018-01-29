@@ -68,6 +68,15 @@ public class OtaStatusService {
 	}
 	
 	/**
+	 * 根据状态统计
+	 * @return
+	 */
+	public Integer countByStatus(String status) {
+		Integer count = otaStatusMapper.countByStatus(status);
+		return count; 
+	}
+	
+	/**
 	 * #  0：安装失败
 	 * #  1：安装成功
 	 * #  2：单包crc错误

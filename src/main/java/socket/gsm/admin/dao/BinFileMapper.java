@@ -20,4 +20,6 @@ public interface BinFileMapper {
     int updateByPrimaryKey(BinFile record);
 
 	List<BinFile> queryAll();
+
+	Integer countByStatus(int status);
 }

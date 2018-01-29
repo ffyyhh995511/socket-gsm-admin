@@ -193,5 +193,9 @@
     </if>
     
   </select>
+   <select id="countByStatus" resultType="java.lang.Integer">
+  	select count(status) from ota_status where 1=1
+  	and status = #{status}
+  </select>
   
 </mapper>

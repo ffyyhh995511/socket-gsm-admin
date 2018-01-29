@@ -10,13 +10,14 @@
     <result column="close_lock_time" jdbcType="TIMESTAMP" property="closeLockTime" />
     <result column="send_request_time" jdbcType="TIMESTAMP" property="sendRequestTime" />
     <result column="open_period" jdbcType="INTEGER" property="openPeriod" />
+    <result column="location" jdbcType="VARCHAR" property="location" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="socket.gsm.admin.bean.LockEndRide">
     <result column="result" jdbcType="LONGVARCHAR" property="result" />
     <result column="payload" jdbcType="LONGVARCHAR" property="payload" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, mac, create_date, update_date,open_lock_time, close_lock_time, send_request_time, open_period
+    id, mac, create_date, update_date,open_lock_time, close_lock_time, send_request_time, open_period,location
   </sql>
   <sql id="Blob_Column_List">
     result,payload
@@ -135,6 +136,13 @@
     
 	order by create_date desc
 	
+  </select>
+  
+  
+  <select id="lastTimeCloseInfo" resultMap="ResultMapWithBLOBs">
+	SELECT lef.* from (SELECT MAX(create_date) 'max_create_date',mac FROM
+	lock_end_ride GROUP BY mac) maxMac LEFT JOIN lock_end_ride lef on
+	maxMac.max_create_date = lef.create_date and maxMac.mac = lef.mac
   </select>
   
 </mapper>

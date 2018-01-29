@@ -23,4 +23,6 @@ public interface LockEndRideMapper {
     int updateByPrimaryKey(LockEndRide record);
 
 	List<LockEndRide> queryInMacWithDate(@Param("start")Date start,@Param("end")Date end,@Param("macs")String macs[]);
+
+	List<LockEndRide> lastTimeCloseInfo();
 }
