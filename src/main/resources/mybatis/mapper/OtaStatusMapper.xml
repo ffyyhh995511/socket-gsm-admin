@@ -194,8 +194,28 @@
     
   </select>
    <select id="countByStatus" resultType="java.lang.Integer">
-  	select count(status) from ota_status where 1=1
-  	and status = #{status}
+  	select count(id) from ota_status where 1=1
+  	
+  	  <if test="newHardwareVer != null">
+        and new_hardware_ver = #{newHardwareVer,jdbcType=INTEGER}
+      </if>
+      
+      <if test="newSoftwareVer != null">
+        and new_software_ver = #{newSoftwareVer,jdbcType=INTEGER}
+      </if>
+      
+      <if test="oldHardwareVer != null">
+        and old_hardware_ver = #{oldHardwareVer,jdbcType=INTEGER}
+      </if>
+      
+      <if test="oldSoftwareVer != null">
+        and old_software_ver = #{oldSoftwareVer,jdbcType=INTEGER}
+      </if>
+      
+      <if test="status != null">
+        and status = #{status,jdbcType=VARCHAR}
+      </if>
+      
   </select>
   
 </mapper>

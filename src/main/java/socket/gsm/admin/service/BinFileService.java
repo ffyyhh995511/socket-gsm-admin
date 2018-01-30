@@ -13,6 +13,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,9 +24,12 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 
 import socket.gsm.admin.bean.BinFile;
+import socket.gsm.admin.bean.OtaStatus;
 import socket.gsm.admin.commons.OpenPage;
 import socket.gsm.admin.dao.BinFileMapper;
+import socket.gsm.admin.dao.OtaStatusMapper;
 import socket.gsm.admin.utils.CrcUtil;
+import socket.gsm.admin.vo.BinFileVo;
 
 @Service
 public class BinFileService {
@@ -34,6 +38,9 @@ public class BinFileService {
 	
 	@Resource
 	BinFileMapper binFileMapper;
+	
+	@Resource
+	OtaStatusMapper otaStatusMapper;
 	
 	
 	public int delete(Integer id){
@@ -131,8 +138,46 @@ public class BinFileService {
 		PageHelper.startPage(pageNum, pageSize);
 
 	    List<BinFile> list = binFileMapper.queryAll();
+	    calcCountByStatusList(list);
 	    Page p = ((Page) list);
 	    return OpenPage.buildPage(p);
+	}
+	
+	/**
+	 * 统计这个估计版本各个状态的数据
+	 * 
+	 * #  0：安装失败
+	 * #  1：安装成功
+	 * #  2：单包crc错误
+	 * #  3：整包crc错误
+	 * #  4：下载完成
+	 * #  5：解析出来的包id不是请求id
+	 * #  6：易客不需要升级
+	 * @param list
+	 * @return
+	 * @throws InvocationTargetException 
+	 * @throws IllegalAccessException 
+	 */
+	private void calcCountByStatusList(List<BinFile> list) throws IllegalAccessException, InvocationTargetException {
+		for (BinFile vo : list) {
+			OtaStatus record = new OtaStatus();
+			record.setNewHardwareVer(vo.getNewHardwareVer());
+			record.setNewSoftwareVer(vo.getNewSoftwareVer());
+			record.setOldHardwareVer(vo.getOldHardwareVer());
+			record.setOldSoftwareVer(vo.getOldSoftwareVer());
+			//升级设备数(下载完成)
+			record.setStatus("4");
+			Integer downLoadSucc = otaStatusMapper.countByStatus(record);
+			//安装成功
+			record.setStatus("1");
+			Integer installSucc = otaStatusMapper.countByStatus(record);
+			//安装失败
+			record.setStatus("0");
+			Integer installFail = otaStatusMapper.countByStatus(record);
+			vo.setDownLoadSucc(downLoadSucc);
+			vo.setInstallSucc(installSucc);
+			vo.setInstallFail(installFail);
+		}
 	}
 
 	public int editStatusPassTest(Integer id) {

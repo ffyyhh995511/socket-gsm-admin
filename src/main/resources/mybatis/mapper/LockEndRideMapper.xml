@@ -11,6 +11,8 @@
     <result column="send_request_time" jdbcType="TIMESTAMP" property="sendRequestTime" />
     <result column="open_period" jdbcType="INTEGER" property="openPeriod" />
     <result column="location" jdbcType="VARCHAR" property="location" />
+    <result column="lbs_location" jdbcType="VARCHAR" property="lbsLocation" />
+    
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="socket.gsm.admin.bean.LockEndRide">
     <result column="result" jdbcType="LONGVARCHAR" property="result" />
@@ -143,6 +145,17 @@
 	SELECT lef.* from (SELECT MAX(create_date) 'max_create_date',mac FROM
 	lock_end_ride GROUP BY mac) maxMac LEFT JOIN lock_end_ride lef on
 	maxMac.max_create_date = lef.create_date and maxMac.mac = lef.mac
+  </select>
+  
+  
+  <select id="closeLockHisInfo" resultMap="ResultMapWithBLOBs">
+  	select 
+    <include refid="Base_Column_List" />
+    from lock_end_ride
+    where 1 = 1
+    and mac = #{mac,jdbcType=VARCHAR}
+	order by create_date desc
+	
   </select>
   
 </mapper>

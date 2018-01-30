@@ -24,6 +24,6 @@ public interface OtaStatusMapper {
 	
 	List<OtaStatus> statisDownloadAndInstall(@Param("startDate")Date startDate, @Param("endStart")Date endStart, @Param("macs")String macs[], @Param("newHardwareVer")Integer newHardwareVer, @Param("newSoftwareVer")Integer newSoftwareVer, @Param("statuses")String statuses[]);
 
-	Integer countByStatus(@Param("status")String status);
+	Integer countByStatus(OtaStatus record);
 
 }

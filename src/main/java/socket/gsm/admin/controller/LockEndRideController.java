@@ -176,4 +176,28 @@ public class LockEndRideController extends BaseController{
 		}
     }
 	
+	/**
+	 * 每把锁开锁历史记录
+	 * @param pageNum
+	 * @param pageSize
+	 * @param mac
+	 * @return
+	 */
+	@RequestMapping(value="/closeLockHisInfo",method=RequestMethod.GET)
+    public Object closeLockHisInfo(Integer pageNum,Integer pageSize,String mac){
+		if(StringUtils.isBlank(mac)) {
+			return responseFail("mac地址不能为空");
+		}
+		pageNum = pageNum == null ? 1 : pageNum;
+		pageSize = pageSize == null ? 10 :pageSize;
+		pageSize = pageSize > 500 ? 500 : pageSize;
+		try {
+			OpenPage page = lockEndRideService.closeLockHisInfo(pageNum, pageSize,mac);
+        	return responseSuccess("每把锁开锁历史记录成功", page);
+        } catch (Exception e) {
+			logger.error("每把锁开锁历史记录失败",e);
+			return responseFail("每把锁开锁历史记录失败");
+		}
+    }
+	
 }

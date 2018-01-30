@@ -71,8 +71,9 @@ public class OtaStatusService {
 	 * 根据状态统计
 	 * @return
 	 */
-	public Integer countByStatus(String status) {
-		Integer count = otaStatusMapper.countByStatus(status);
+    
+	public Integer countByStatus(OtaStatus otaStatus) {
+		Integer count = otaStatusMapper.countByStatus(otaStatus);
 		return count; 
 	}
 	

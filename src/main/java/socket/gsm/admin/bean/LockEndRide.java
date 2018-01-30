@@ -39,6 +39,8 @@ public class LockEndRide {
      * 关锁定位
      */
     private String location;
+    
+    private String lbsLocation;
 
     public String getId() {
         return id;
@@ -126,6 +128,14 @@ public class LockEndRide {
 
 	public void setLocation(String location) {
 		this.location = location;
+	}
+
+	public String getLbsLocation() {
+		return lbsLocation;
+	}
+
+	public void setLbsLocation(String lbsLocation) {
+		this.lbsLocation = lbsLocation;
 	}
     
     

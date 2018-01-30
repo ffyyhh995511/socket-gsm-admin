@@ -25,4 +25,6 @@ public interface LockEndRideMapper {
 	List<LockEndRide> queryInMacWithDate(@Param("start")Date start,@Param("end")Date end,@Param("macs")String macs[]);
 
 	List<LockEndRide> lastTimeCloseInfo();
+
+	List<LockEndRide> closeLockHisInfo(@Param("mac")String mac);
 }

@@ -15,6 +15,10 @@ public class LoginUser {
 	 */
 	public static final String SUPERLOGIN[] ={"superadmin"};
 	
+	private LoginUser() {
+		
+	}
+	
 	
 	public static boolean checkUser(String username,String password){
 		for (String item : LOGIN) {

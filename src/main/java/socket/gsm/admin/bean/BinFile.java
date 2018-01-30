@@ -33,6 +33,13 @@ public class BinFile {
 
     private byte[] binData;
     
+    
+    private Integer downLoadSucc;
+	
+	private Integer installSucc;
+	
+	private Integer installFail;
+    
     public Integer getId() {
         return id;
     }
@@ -152,5 +159,30 @@ public class BinFile {
     public void setBinData(byte[] binData) {
         this.binData = binData;
     }
+
+	public Integer getDownLoadSucc() {
+		return downLoadSucc;
+	}
+
+	public void setDownLoadSucc(Integer downLoadSucc) {
+		this.downLoadSucc = downLoadSucc;
+	}
+
+	public Integer getInstallSucc() {
+		return installSucc;
+	}
+
+	public void setInstallSucc(Integer installSucc) {
+		this.installSucc = installSucc;
+	}
+
+	public Integer getInstallFail() {
+		return installFail;
+	}
+
+	public void setInstallFail(Integer installFail) {
+		this.installFail = installFail;
+	}
+    
     
 }

@@ -213,6 +213,14 @@ public class LockEndRideService {
 		Page<LockEndRide> p = ((Page<LockEndRide>) list);
 	    return OpenPage.buildPage(p);
 	}
+
+	public OpenPage closeLockHisInfo(Integer pageNum, Integer pageSize, String mac) {
+		PageHelper.startPage(pageNum, pageSize);
+		List<LockEndRide> list = lockEndRideMapper.closeLockHisInfo(mac);
+		Page<LockEndRide> p = ((Page<LockEndRide>) list);
+	    return OpenPage.buildPage(p);
+		
+	}
 	
 	
 }
