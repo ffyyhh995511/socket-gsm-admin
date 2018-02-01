@@ -18,4 +18,9 @@ public class WebUserServiceFallback implements WebUserService{
 		return Response.interiorErrorResponse();
 	}
 
+	@Override
+	public Object uplogout(Long uid, String appId, String appSecret) {
+		return Response.interiorErrorResponse();
+	}
+
 }

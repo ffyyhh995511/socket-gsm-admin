@@ -64,4 +64,9 @@ public class UserService {
 		}
 		return BaseController.responseFail("账号密码错误");
 	}
+	
+	public Object webLogout(Long uid) {
+		webUserService.uplogout(uid, BusinessConfig.getUserAppId(),BusinessConfig.getUserAppSecret());
+		return BaseController.responseSuccess("成功退出",null);
+	}
 }

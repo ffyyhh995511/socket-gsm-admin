@@ -41,6 +41,8 @@ public class LockEndRide {
     private String location;
     
     private String lbsLocation;
+    
+    private Integer bat;
 
     public String getId() {
         return id;
@@ -136,6 +138,14 @@ public class LockEndRide {
 
 	public void setLbsLocation(String lbsLocation) {
 		this.lbsLocation = lbsLocation;
+	}
+
+	public Integer getBat() {
+		return bat;
+	}
+
+	public void setBat(Integer bat) {
+		this.bat = bat;
 	}
     
     

@@ -133,11 +133,14 @@ public class LockEndRideController extends BaseController{
 	 * @return
 	 */
 	@RequestMapping(value="/payloadDetails",method=RequestMethod.GET)
-    public Object payloadDetails(String startDate,String endStart,String macs,String power){
+    public Object payloadDetails(String startDate,String endStart,String macs,String power,Integer pageNum,Integer pageSize){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date start = null;
 		Date end = null;
 		String[] macArray = null;
+		pageNum = pageNum == null ? 1 : pageNum;
+		pageSize = pageSize == null ? 10 :pageSize; 
+		pageSize = pageSize > 500 ? 500 : pageSize;
 		try {
 			if(StringUtils.isNoneBlank(startDate)){
 				start = sdf.parse(startDate +" 00:00:00");
@@ -148,7 +151,7 @@ public class LockEndRideController extends BaseController{
 			if(StringUtils.isNoneBlank(macs)){
 				macArray = macs.split(",");
 			}
-			List<LockEndRide> queryLoadPayLoad = lockEndRideService.queryLoadPayLoad(start, end, macArray);
+			OpenPage queryLoadPayLoad = lockEndRideService.queryLoadPayLoad(start, end, macArray,pageNum, pageSize);
         	return responseSuccess("结束计费payload details成功", queryLoadPayLoad);
         } catch (Exception e) {
 			logger.error("结束计费payload details失败",e);

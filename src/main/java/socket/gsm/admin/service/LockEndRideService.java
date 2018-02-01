@@ -15,6 +15,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 
@@ -203,15 +205,29 @@ public class LockEndRideService {
 		return list;
 	}
 
-	public List<LockEndRide> queryLoadPayLoad(Date start, Date end, String[] macArray) {
-		return lockEndRideMapper.queryInMacWithDate(start,end,macArray);
+	public OpenPage queryLoadPayLoad(Date start, Date end, String[] macArray,Integer pageNum, Integer pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
+		List<LockEndRide> list = lockEndRideMapper.queryInMacWithDate(start,end,macArray);
+		Page p = ((Page) list);
+	    return OpenPage.buildPage(p);
 	}
 
 	public OpenPage lastTimeCloseInfo(Integer pageNum,Integer pageSize) {
 		PageHelper.startPage(pageNum, pageSize);
 		List<LockEndRide> list = lockEndRideMapper.lastTimeCloseInfo();
+		processPower(list);
 		Page<LockEndRide> p = ((Page<LockEndRide>) list);
 	    return OpenPage.buildPage(p);
+	}
+
+	private void processPower(List<LockEndRide> list) {
+		for (LockEndRide lockEndRide : list) {
+			String payload = lockEndRide.getPayload();
+			JSONObject parseObject = JSON.parseObject(payload);
+			Integer bat = parseObject.getInteger("BAT");
+			lockEndRide.setBat(bat);
+		}
+		
 	}
 
 	public OpenPage closeLockHisInfo(Integer pageNum, Integer pageSize, String mac) {

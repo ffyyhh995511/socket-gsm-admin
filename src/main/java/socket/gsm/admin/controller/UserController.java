@@ -51,9 +51,16 @@ public class UserController extends BaseController {
 
 	@ResponseBody
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public Object logout(HttpServletRequest request) {
-		request.getSession().removeAttribute("token");
-		return responseSuccess("退出成功", null);
+	public Object logout(Long uid) {
+		if (uid == null) {
+			return responseFail("uid不能为空");
+		}
+		try {
+			webUserService.webLogout(uid);
+			return responseSuccess("退出成功",null);
+		} catch (Exception e) {
+		}
+		return responseSuccess("退出失败", null);
 	}
 
 }

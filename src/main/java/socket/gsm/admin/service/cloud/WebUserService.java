@@ -23,4 +23,7 @@ public interface WebUserService {
 	@RequestMapping(value = "/check/token", method = RequestMethod.GET)
 	Object checkToken(@RequestParam("token") String token, @RequestHeader("appId") String appId,
 			@RequestHeader("appSecret") String appSecret);
+	
+	@RequestMapping(value = "/user/logout", method = RequestMethod.POST)
+	Object uplogout(@RequestParam("uid") Long uid,@RequestHeader("appId") String appId, @RequestHeader("appSecret") String appSecret);
 }
