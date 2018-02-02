@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartRequest;
 
 import socket.gsm.admin.bean.BinFile;
 import socket.gsm.admin.bean.OtaStatus;
-import socket.gsm.admin.commons.LoginUser;
 import socket.gsm.admin.commons.OpenPage;
 import socket.gsm.admin.service.BinFileService;
 
@@ -87,10 +86,6 @@ public class BinFileController extends BaseController{
     public Object delete(Integer id){
 		if(id == null){
 			return responseParamFail("参数不合法");
-		}
-		String value = (String) getRequest().getSession().getAttribute("user");
-		if(!LoginUser.checkAdminUser(value)){
-			return responseFail("没有权限");
 		}
         try {
         	int res = binFileService.delete(id);

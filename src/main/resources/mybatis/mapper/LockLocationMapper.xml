@@ -152,5 +152,37 @@
 	order by create_date desc
 	
   </select>
+
+
+
+	<select id="LatestLocationInformation" resultMap="BaseResultMap">
+		SELECT
+		lef.*
+		FROM
+		(
+		SELECT
+		MAX(create_date) 'max_create_date',
+		mac_address
+		FROM
+		lock_location
+		GROUP BY
+		mac_address
+		) maxMac
+		LEFT JOIN lock_location lef ON maxMac.max_create_date =
+		lef.create_date
+		AND maxMac.mac_address = lef.mac_address
+		
+		<if test="mac_address != null">
+			where lef.mac_address = #{mac_address,jdbcType=VARCHAR}
+    	</if>
+	</select>
+  
+  	<select id="getHisLocatInfoByMac" resultMap="BaseResultMap">
+		select 
+		* 
+		from
+		lock_location 
+		where mac_address = #{mac_address,jdbcType=VARCHAR} order by create_date desc
+	</select>
   
 </mapper>

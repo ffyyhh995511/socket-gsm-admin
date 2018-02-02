@@ -29,8 +29,8 @@ import socket.gsm.admin.vo.LocationSummarizeVo;
  *
  * 2017年8月31日 上午11:47:42
  */
-
 @Service
+@SuppressWarnings("rawtypes")
 public class LockLocationService {
 	
 	@Resource
@@ -163,6 +163,21 @@ public class LockLocationService {
 		list.add(gpsVo);
 		list.add(lbsVo);
 		return list;
+	}
+
+	
+	public OpenPage LatestLocationInformation(Integer pageNum, Integer pageSize, String mac) {
+		PageHelper.startPage(pageNum, pageSize);
+		List<LockLocation> list = locationMapper.LatestLocationInformation(mac);
+		Page p = ((Page<LockLocation>) list);
+	    return OpenPage.buildPage(p);
+	}
+
+	public OpenPage getHisLocatInfoByMac(Integer pageNum, Integer pageSize, String mac) {
+		PageHelper.startPage(pageNum, pageSize);
+		List<LockLocation> list = locationMapper.getHisLocatInfoByMac(mac);
+		Page p = ((Page<LockLocation>) list);
+	    return OpenPage.buildPage(p);
 	}
 	
 }

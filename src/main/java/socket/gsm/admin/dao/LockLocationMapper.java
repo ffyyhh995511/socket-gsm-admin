@@ -21,4 +21,8 @@ public interface LockLocationMapper {
     int updateByPrimaryKey(LockLocation record);
     
     List<LockLocation> queryInMacWithDate(@Param("start")Date start,@Param("end")Date end,@Param("macs")String macs[]);
+
+	List<LockLocation> LatestLocationInformation(@Param("mac_address")String mac_address);
+
+	List<LockLocation> getHisLocatInfoByMac(@Param("mac_address")String mac_address);
 }

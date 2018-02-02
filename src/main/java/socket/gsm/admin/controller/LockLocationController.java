@@ -156,6 +156,51 @@ public class LockLocationController extends BaseController{
 		}
 	}
 	
+	/**
+	 * 最新的定位信息
+	 * @return
+	 */
+	@RequestMapping(value="/LatestLocationInformation",method=RequestMethod.GET)
+	public Object LatestLocationInformation(Integer pageNum,Integer pageSize,String mac) {
+		pageNum = pageNum == null ? 1 : pageNum;
+		pageSize = pageSize == null ? 10 :pageSize; 
+		pageSize = pageSize > 500 ? 500 : pageSize;
+		if(StringUtils.isBlank(mac)) {
+			mac = null;
+		}
+		try {
+			OpenPage page = LockLocationService.LatestLocationInformation(pageNum,pageSize,mac);
+			return responseSuccess("最新的定位信息成功", page);
+		}catch (Exception e) {
+			logger.error("最新的定位信息失败",e);
+			return responseFail("最新的定位信息失败");
+		}
+	}
+	
+	/**
+	 * 通过mac地址获取历史定位数据
+	 * @param pageNum
+	 * @param pageSize
+	 * @param mac
+	 * @return
+	 */
+	@RequestMapping(value="/getHisLocatInfoByMac",method=RequestMethod.GET)
+	public Object getHisLocatInfoByMac(Integer pageNum,Integer pageSize,String mac) {
+		pageNum = pageNum == null ? 1 : pageNum;
+		pageSize = pageSize == null ? 10 :pageSize; 
+		pageSize = pageSize > 500 ? 500 : pageSize;
+		if(StringUtils.isBlank(mac)) {
+			return responseFail("mac不能为空");
+		}
+		try {
+			OpenPage page = LockLocationService.getHisLocatInfoByMac(pageNum,pageSize,mac);
+			return responseSuccess("地址获取历史定位数据成功", page);
+		}catch (Exception e) {
+			logger.error("地址获取历史定位数据失败",e);
+			return responseFail("地址获取历史定位数据失败");
+		}
+	}
+	
 	
 	
 }
