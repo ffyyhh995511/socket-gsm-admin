@@ -39,6 +39,8 @@ public class BinFile {
 	private Integer installSucc;
 	
 	private Integer installFail;
+	
+	private Integer isDelete;
     
     public Integer getId() {
         return id;
@@ -182,6 +184,14 @@ public class BinFile {
 
 	public void setInstallFail(Integer installFail) {
 		this.installFail = installFail;
+	}
+
+	public Integer getIsDelete() {
+		return isDelete;
+	}
+
+	public void setIsDelete(Integer isDelete) {
+		this.isDelete = isDelete;
 	}
     
     

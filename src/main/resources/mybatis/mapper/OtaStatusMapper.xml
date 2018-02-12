@@ -10,10 +10,12 @@
     <result column="old_software_ver" jdbcType="INTEGER" property="oldSoftwareVer" />
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="bin_id" jdbcType="INTEGER" property="binId" />
+    
   </resultMap>
   <sql id="Base_Column_List">
     id, mac_address, new_hardware_ver, new_software_ver, old_hardware_ver, old_software_ver, 
-    status, create_time
+    status, create_time,bin_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -214,6 +216,10 @@
       
       <if test="status != null">
         and status = #{status,jdbcType=VARCHAR}
+      </if>
+      
+      <if test="binId != null">
+        and bin_id = #{binId,jdbcType=VARCHAR}
       </if>
       
   </select>

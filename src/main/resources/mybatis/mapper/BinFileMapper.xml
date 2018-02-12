@@ -16,6 +16,7 @@
     <result column="install__interval" jdbcType="DOUBLE" property="installInterval" />
     <result column="upgrade_interval" jdbcType="DOUBLE" property="upgradeInterval" />
     <result column="white_list_mac" jdbcType="VARCHAR" property="whiteListMac" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="socket.gsm.admin.bean.BinFile">
     <result column="bin_data" jdbcType="LONGVARBINARY" property="binData" />
@@ -23,7 +24,7 @@
   <sql id="Base_Column_List">
     id, new_hardware_ver, new_software_ver, old_hardware_ver, old_software_ver, mark, 
     create_time, title, update_time, crc, status, install__interval, upgrade_interval, 
-    white_list_mac
+    white_list_mac,is_delete
   </sql>
   <sql id="Blob_Column_List">
     bin_data
@@ -45,14 +46,14 @@
       old_hardware_ver, old_software_ver, mark, 
       create_time, title, update_time, 
       crc, status, install__interval, 
-      upgrade_interval, white_list_mac, bin_data
+      upgrade_interval, white_list_mac, bin_data,is_delete
       )
     values (#{id,jdbcType=INTEGER}, #{newHardwareVer,jdbcType=INTEGER}, #{newSoftwareVer,jdbcType=INTEGER}, 
       #{oldHardwareVer,jdbcType=INTEGER}, #{oldSoftwareVer,jdbcType=INTEGER}, #{mark,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{title,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{crc,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{installInterval,jdbcType=DOUBLE}, 
-      #{upgradeInterval,jdbcType=DOUBLE}, #{whiteListMac,jdbcType=VARCHAR}, #{binData,jdbcType=LONGVARBINARY}
-      )
+      #{upgradeInterval,jdbcType=DOUBLE}, #{whiteListMac,jdbcType=VARCHAR}, #{binData,jdbcType=LONGVARBINARY},
+      #{isDelete,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="socket.gsm.admin.bean.BinFile">
     insert into bin_file
@@ -196,6 +197,10 @@
       <if test="binData != null">
         bin_data = #{binData,jdbcType=LONGVARBINARY},
       </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER}
+      </if>
+      
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -239,7 +244,9 @@
   <select id="queryAll" resultMap="BaseResultMap">
   	select 
     <include refid="Base_Column_List" />
-    from bin_file order by id desc
+    from bin_file where is_delete = 0 order by id desc
   </select>
+  
+  
   
 </mapper>

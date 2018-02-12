@@ -20,6 +20,8 @@ public class OtaStatus {
     private Date createTime;
     
     private String statusMsg;
+    
+    private Integer binId;
 
     public Integer getId() {
         return id;
@@ -92,6 +94,13 @@ public class OtaStatus {
 	public void setStatusMsg(String statusMsg) {
 		this.statusMsg = statusMsg;
 	}
-    
+
+	public Integer getBinId() {
+		return binId;
+	}
+
+	public void setBinId(Integer binId) {
+		this.binId = binId;
+	}
     
 }

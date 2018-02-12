@@ -40,6 +40,10 @@ public class BinFileController extends BaseController{
 	@ResponseBody
 	@RequestMapping(value="/upload",method=RequestMethod.POST)
     public Object upload(HttpServletRequest request,BinFile binFile){
+		if(binFile.getNewHardwareVer() == null || binFile.getNewSoftwareVer() == null || binFile.getOldHardwareVer() == null || binFile.getOldSoftwareVer() == null){
+			return responseParamFail("参数不合法");
+		}
+		
         try {
         	List<String> pathList = binFileService.upload(request);
         	if(pathList.size() != 1){

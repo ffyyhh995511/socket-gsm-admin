@@ -145,6 +145,15 @@
 	SELECT lef.* from (SELECT MAX(create_date) 'max_create_date',mac FROM
 	lock_end_ride GROUP BY mac) maxMac LEFT JOIN lock_end_ride lef on
 	maxMac.max_create_date = lef.create_date and maxMac.mac = lef.mac
+	where 1 = 1
+	<if test="macs != null">
+    	and lef.mac in
+	    <foreach item="item" index="index" collection="macs" open="("
+				separator="," close=")">
+				#{item}
+		</foreach>
+    </if>
+	
   </select>
   
   

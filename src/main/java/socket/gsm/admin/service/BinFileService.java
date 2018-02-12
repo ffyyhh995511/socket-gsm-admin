@@ -44,7 +44,10 @@ public class BinFileService {
 	
 	
 	public int delete(Integer id){
-		return binFileMapper.deleteByPrimaryKey(id);
+		BinFile binFile = new BinFile();
+		binFile.setId(id);
+		binFile.setIsDelete(1);
+		return binFileMapper.updateByPrimaryKeySelective(binFile);
 	}
 	
 	/**
@@ -60,7 +63,8 @@ public class BinFileService {
 		int code = CrcUtil.crc_16_CCITT_False(bin, bin.length);
 		binFile.setCrc(String.valueOf(code));
 		binFile.setBinData(bin);
-		binFile.setStatus(0);
+		binFile.setStatus(1);
+		binFile.setIsDelete(0);
 		return binFileMapper.insert(binFile);
 	}
 	
@@ -165,6 +169,7 @@ public class BinFileService {
 			record.setNewSoftwareVer(vo.getNewSoftwareVer());
 			record.setOldHardwareVer(vo.getOldHardwareVer());
 			record.setOldSoftwareVer(vo.getOldSoftwareVer());
+			record.setBinId(vo.getId());
 			//升级设备数(下载完成)
 			record.setStatus("4");
 			Integer downLoadSucc = otaStatusMapper.countByStatus(record);

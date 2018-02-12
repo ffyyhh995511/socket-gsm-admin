@@ -212,9 +212,9 @@ public class LockEndRideService {
 	    return OpenPage.buildPage(p);
 	}
 
-	public OpenPage lastTimeCloseInfo(Integer pageNum,Integer pageSize) {
+	public OpenPage lastTimeCloseInfo(Integer pageNum,Integer pageSize,String [] macArray) {
 		PageHelper.startPage(pageNum, pageSize);
-		List<LockEndRide> list = lockEndRideMapper.lastTimeCloseInfo();
+		List<LockEndRide> list = lockEndRideMapper.lastTimeCloseInfo(macArray);
 		processPower(list);
 		Page<LockEndRide> p = ((Page<LockEndRide>) list);
 	    return OpenPage.buildPage(p);
@@ -224,8 +224,10 @@ public class LockEndRideService {
 		for (LockEndRide lockEndRide : list) {
 			String payload = lockEndRide.getPayload();
 			JSONObject parseObject = JSON.parseObject(payload);
-			Integer bat = parseObject.getInteger("BAT");
-			lockEndRide.setBat(bat);
+			if(parseObject != null && StringUtils.isNotBlank(parseObject.getString("BAT"))) {
+				Integer bat = parseObject.getInteger("BAT");
+				lockEndRide.setBat(bat);
+			}
 		}
 		
 	}

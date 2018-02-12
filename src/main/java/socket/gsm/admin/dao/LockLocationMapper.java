@@ -22,7 +22,7 @@ public interface LockLocationMapper {
     
     List<LockLocation> queryInMacWithDate(@Param("start")Date start,@Param("end")Date end,@Param("macs")String macs[]);
 
-	List<LockLocation> LatestLocationInformation(@Param("mac_address")String mac_address);
+	List<LockLocation> LatestLocationInformation(@Param("macs")String macs[]);
 
 	List<LockLocation> getHisLocatInfoByMac(@Param("mac_address")String mac_address);
 }

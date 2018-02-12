@@ -161,15 +161,16 @@ public class LockLocationController extends BaseController{
 	 * @return
 	 */
 	@RequestMapping(value="/LatestLocationInformation",method=RequestMethod.GET)
-	public Object LatestLocationInformation(Integer pageNum,Integer pageSize,String mac) {
+	public Object LatestLocationInformation(Integer pageNum,Integer pageSize,String macs) {
 		pageNum = pageNum == null ? 1 : pageNum;
 		pageSize = pageSize == null ? 10 :pageSize; 
 		pageSize = pageSize > 500 ? 500 : pageSize;
-		if(StringUtils.isBlank(mac)) {
-			mac = null;
+		String [] macArray = null;
+		if(StringUtils.isNoneBlank(macs)){
+			macArray = macs.split(",");
 		}
 		try {
-			OpenPage page = LockLocationService.LatestLocationInformation(pageNum,pageSize,mac);
+			OpenPage page = LockLocationService.LatestLocationInformation(pageNum,pageSize,macArray);
 			return responseSuccess("最新的定位信息成功", page);
 		}catch (Exception e) {
 			logger.error("最新的定位信息失败",e);

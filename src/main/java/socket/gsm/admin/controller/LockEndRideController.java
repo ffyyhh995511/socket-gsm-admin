@@ -166,12 +166,16 @@ public class LockEndRideController extends BaseController{
 	 * @return
 	 */
 	@RequestMapping(value="/lastTimeCloseInfo",method=RequestMethod.GET)
-    public Object lastTimeCloseInfo(Integer pageNum,Integer pageSize){
+    public Object lastTimeCloseInfo(Integer pageNum,Integer pageSize,String macs){
 		pageNum = pageNum == null ? 1 : pageNum;
 		pageSize = pageSize == null ? 10 :pageSize;
 		pageSize = pageSize > 500 ? 500 : pageSize;
+		String [] macArray = null;
+		if(StringUtils.isNoneBlank(macs)){
+			macArray = macs.split(",");
+		}
 		try {
-			OpenPage lastTimeCloseInfo = lockEndRideService.lastTimeCloseInfo(pageNum, pageSize);
+			OpenPage lastTimeCloseInfo = lockEndRideService.lastTimeCloseInfo(pageNum, pageSize,macArray);
         	return responseSuccess("每把锁最新开锁记录信息成功", lastTimeCloseInfo);
         } catch (Exception e) {
 			logger.error("每把锁最新开锁记录信息失败",e);

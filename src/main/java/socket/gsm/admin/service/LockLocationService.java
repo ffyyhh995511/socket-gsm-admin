@@ -166,9 +166,9 @@ public class LockLocationService {
 	}
 
 	
-	public OpenPage LatestLocationInformation(Integer pageNum, Integer pageSize, String mac) {
+	public OpenPage LatestLocationInformation(Integer pageNum, Integer pageSize, String [] macArray) {
 		PageHelper.startPage(pageNum, pageSize);
-		List<LockLocation> list = locationMapper.LatestLocationInformation(mac);
+		List<LockLocation> list = locationMapper.LatestLocationInformation(macArray);
 		Page p = ((Page<LockLocation>) list);
 	    return OpenPage.buildPage(p);
 	}
