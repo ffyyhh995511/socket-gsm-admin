@@ -60,6 +60,7 @@ public class UserService {
 			}
 			return BaseController.responseSuccess("登陆成功",null);
 		}
+		log.warn("登陆状态返回不成功");
 		return BaseController.responseFail("账号密码错误");
 	}
 	
