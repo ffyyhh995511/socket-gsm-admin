@@ -24,8 +24,8 @@ public class BaseController extends HandlerInterceptorAdapter{
 	
 	protected final Log logger = LogFactory.getLog(getClass());
 	
-	private static final ThreadLocal<HttpServletRequest> REQUEST = new ThreadLocal<HttpServletRequest>();
-	private static final ThreadLocal<HttpServletResponse> RESPONSE = new ThreadLocal<HttpServletResponse>();
+	private static final ThreadLocal<HttpServletRequest> REQUEST = new ThreadLocal<>();
+	private static final ThreadLocal<HttpServletResponse> RESPONSE = new ThreadLocal<>();
 
 	/**
 	 * 拦截器之前
